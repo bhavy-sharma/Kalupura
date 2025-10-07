@@ -1,2 +1,19 @@
 @import "tailwindcss";
 
+@layer base {
+  :root {
+    --village-green: 46 139 87; /* #2E8B57 */
+    --village-brown: 139 69 19; /* #8B4513 */
+    --village-cream: 255 248 220; /* #FFF8DC */
+    --village-cream-light: 250 245 230;
+  }
+}
+
+@layer utilities {
+  .text-green { color: rgb(var(--village-green)); }
+  .bg-green { background-color: rgb(var(--village-green)); }
+  .text-brown { color: rgb(var(--village-brown)); }
+  .bg-brown { background-color: rgb(var(--village-brown)); }
+  .bg-cream { background-color: rgb(var(--village-cream)); }
+  .bg-cream-light { background-color: rgb(var(--village-cream-light)); }
+}
