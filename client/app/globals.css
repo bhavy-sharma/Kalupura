@@ -2,9 +2,9 @@
 @import "tailwindcss";
 
 :root {
-  --village-green: 76 175 80;     /* #4CAF50 */
-  --village-brown: 139 69 19;     /* #8B4513 */
-  --village-beige: 245 245 220;   /* #F5F5DC */
+  --village-green: 76 175 80;     
+  --village-brown: 139 69 19;     
+  --village-beige: 245 245 220;   
   --village-beige-light: 250 248 240;
 }
 
