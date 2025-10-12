@@ -1,0 +1,253 @@
+/* Carousel.css */
+
+.carousel-container {
+  width: 100%;
+  height: 80vh;
+  max-height: 700px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  margin: 20px auto;
+}
+
+.mySwiper {
+  width: 100%;
+  height: 100%;
+}
+
+.slide-image {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.slide-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent 60%);
+  display: flex;
+  align-items: flex-end;
+  padding: 40px 20px;
+  box-sizing: border-box;
+}
+
+.slide-content {
+  color: white;
+  max-width: 800px;
+  padding: 0 20px;
+  margin-bottom: 40px;
+  text-align: center;
+  width: 100%;
+}
+
+.slide-title {
+  font-family: 'Noto Sans Devanagari', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 16px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  line-height: 1.2;
+}
+
+.slide-description {
+  font-family: 'Noto Sans Devanagari', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  margin: 0 0 24px;
+  opacity: 0.95;
+  line-height: 1.5;
+}
+
+.explore-btn {
+  font-family: 'Noto Sans Devanagari', sans-serif;
+  background: #2e7d32;
+  color: white;
+  border: none;
+  padding: 12px 32px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.explore-btn:hover {
+  background: #1b5e20;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.explore-btn:active {
+  transform: translateY(0);
+}
+
+/* === Swiper Default Navigation Arrows - Fixed === */
+.swiper-button-next,
+.swiper-button-prev {
+  width: 44px !important;
+  height: 44px !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-radius: 50% !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+  transition: all 0.3s ease !important;
+  margin-top: -22px !important;
+}
+
+.swiper-button-next:after,
+.swiper-button-prev:after {
+  font-size: 18px !important;
+  font-weight: bold !important;
+  color: #2e7d32 !important;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  background: white !important;
+  transform: scale(1.1) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+.swiper-button-prev {
+  left: 20px !important;
+}
+
+.swiper-button-next {
+  right: 20px !important;
+}
+
+/* === Pagination === */
+.swiper-pagination {
+  bottom: 20px !important;
+}
+
+.swiper-pagination-bullet {
+  width: 12px !important;
+  height: 12px !important;
+  background: rgba(255, 255, 255, 0.5) !important;
+  opacity: 0.7 !important;
+  transition: all 0.3s ease !important;
+}
+
+.swiper-pagination-bullet-active {
+  background: #4CAF50 !important;
+  opacity: 1 !important;
+  transform: scale(1.2) !important;
+}
+
+/* === Responsive === */
+@media (max-width: 1024px) {
+  .swiper-button-next,
+  .swiper-button-prev {
+    width: 40px !important;
+    height: 40px !important;
+    margin-top: -20px !important;
+  }
+  
+  .swiper-button-prev {
+    left: 15px !important;
+  }
+  
+  .swiper-button-next {
+    right: 15px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .carousel-container {
+    height: 70vh;
+    margin: 10px auto;
+    border-radius: 8px;
+  }
+
+  .slide-title {
+    font-size: 2rem;
+  }
+
+  .slide-description {
+    font-size: 1.1rem;
+  }
+
+  .explore-btn {
+    padding: 10px 24px;
+    font-size: 1rem;
+  }
+
+  /* Hide arrows on mobile */
+  .swiper-button-next,
+  .swiper-button-prev {
+    display: none !important;
+  }
+
+  .slide-overlay {
+    padding: 30px 15px;
+  }
+
+  .slide-content {
+    margin-bottom: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel-container {
+    height: 60vh;
+    border-radius: 6px;
+  }
+
+  .slide-title {
+    font-size: 1.75rem;
+  }
+
+  .slide-description {
+    font-size: 1rem;
+  }
+
+  .slide-content {
+    margin-bottom: 25px;
+    padding: 0 15px;
+  }
+
+  .explore-btn {
+    padding: 8px 20px;
+    font-size: 0.9rem;
+  }
+
+  .swiper-pagination-bullet {
+    width: 10px !important;
+    height: 10px !important;
+  }
+}
+
+/* Auto-scroll animation for pagination */
+@keyframes slideProgress {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+.swiper-pagination-bullet-active {
+  position: relative;
+  overflow: hidden;
+}
+
+.swiper-pagination-bullet-active::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: #2e7d32;
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: slideProgress 4s linear forwards;
+}

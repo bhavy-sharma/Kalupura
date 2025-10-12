@@ -1,0 +1,355 @@
+.footer {
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  color: white;
+  margin-top: auto;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Main Footer Content */
+.footer-main {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  gap: 40px;
+  padding: 60px 0 40px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Brand Section */
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.footer-logo {
+  font-family: 'Noto Sans Devanagari', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #10b981, #3b82f6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+}
+
+.footer-description {
+  font-family: 'Noto Sans Devanagari', sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #cbd5e1;
+  margin: 0;
+}
+
+.footer-made-with {
+  font-family: 'Noto Sans Devanagari', sans-serif;
+  font-size: 0.9rem;
+  color: #94a3b8;
+  margin-top: 10px;
+}
+
+.developer-name {
+  color: #10b981;
+  font-weight: 600;
+}
+
+/* Footer Headings */
+.footer-heading {
+  font-family: 'Noto Sans Devanagari', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: white;
+  margin: 0 0 20px 0;
+  position: relative;
+}
+
+.footer-heading::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 30px;
+  height: 2px;
+  background: linear-gradient(90deg, #10b981, #3b82f6);
+  border-radius: 1px;
+}
+
+/* Quick Links */
+.links-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-link {
+  font-family: 'Noto Sans Devanagari', sans-serif;
+  color: #cbd5e1;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-block;
+  position: relative;
+}
+
+.footer-link:hover {
+  color: #10b981;
+  transform: translateX(5px);
+}
+
+.footer-link::before {
+  content: '▸';
+  position: absolute;
+  left: -15px;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.footer-link:hover::before {
+  opacity: 1;
+  left: -12px;
+}
+
+/* Contact Info */
+.contact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.contact-icon {
+  font-size: 1.1rem;
+  width: 20px;
+  text-align: center;
+}
+
+.contact-text {
+  font-family: 'Noto Sans Devanagari', sans-serif;
+  color: #cbd5e1;
+  font-size: 0.95rem;
+}
+
+/* Social Links */
+.social-links {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.social-link {
+  width: 45px;
+  height: 45px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.social-link:hover {
+  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.social-link.facebook:hover {
+  background: #1877f2;
+}
+
+.social-link.youtube:hover {
+  background: #ff0000;
+}
+
+.social-link.whatsapp:hover {
+  background: #25d366;
+}
+
+.social-link.instagram:hover {
+  background: linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
+}
+
+.social-icon {
+  font-size: 1.2rem;
+}
+
+/* Newsletter */
+.newsletter {
+  margin-top: 20px;
+}
+
+.newsletter-text {
+  font-family: 'Noto Sans Devanagari', sans-serif;
+  color: #cbd5e1;
+  font-size: 0.9rem;
+  margin: 0 0 12px 0;
+}
+
+.newsletter-input {
+  display: flex;
+  gap: 8px;
+}
+
+.email-input {
+  flex: 1;
+  padding: 12px 15px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-family: 'Noto Sans Devanagari', sans-serif;
+  font-size: 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.email-input::placeholder {
+  color: #94a3b8;
+}
+
+.email-input:focus {
+  outline: none;
+  border-color: #10b981;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.subscribe-btn {
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Noto Sans Devanagari', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.subscribe-btn:hover {
+  background: linear-gradient(135deg, #059669, #047857);
+  transform: translateY(-2px);
+}
+
+/* Footer Bottom */
+.footer-bottom {
+  padding: 25px 0;
+}
+
+.footer-bottom-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.copyright {
+  font-family: 'Noto Sans Devanagari', sans-serif;
+  color: #94a3b8;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.footer-bottom-links {
+  display: flex;
+  gap: 25px;
+}
+
+.bottom-link {
+  font-family: 'Noto Sans Devanagari', sans-serif;
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.bottom-link:hover {
+  color: #10b981;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .footer-main {
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-main {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 40px 0 30px;
+  }
+
+  .footer-brand {
+    text-align: center;
+  }
+
+  .footer-heading::after {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .footer-bottom-content {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+
+  .footer-bottom-links {
+    gap: 15px;
+  }
+
+  .newsletter-input {
+    flex-direction: column;
+  }
+
+  .social-links {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-container {
+    padding: 0 15px;
+  }
+
+  .footer-logo {
+    font-size: 2rem;
+  }
+
+  .footer-heading {
+    font-size: 1.1rem;
+  }
+
+  .footer-bottom-links {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+/* Animation for social links */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.social-link:hover .social-icon {
+  animation: float 1s ease-in-out infinite;
+}
