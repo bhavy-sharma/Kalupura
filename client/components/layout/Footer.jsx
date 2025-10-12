@@ -110,7 +110,7 @@ const Footer = () => {
             </div>
             
             {/* Newsletter */}
-            <div className="newsletter">
+            {/* <div className="newsletter">
               <p className="newsletter-text">नवीनतम अपडेट प्राप्त करें</p>
               <div className="newsletter-input">
                 <input 
@@ -120,7 +120,7 @@ const Footer = () => {
                 />
                 <button className="subscribe-btn">सब्सक्राइब</button>
               </div>
-            </div>
+            </div> */}
           </div>
 
         </div>
