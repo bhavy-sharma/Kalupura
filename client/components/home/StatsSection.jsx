@@ -1,42 +1,145 @@
-// components/home/StatsSection.jsx
 'use client';
 
-import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import './StatsSection.css';
 
-const stats = [
-  { label: 'Registered Families', value: '142' },
-  { label: 'Total Members', value: '587' },
-  { label: 'Vehicles', value: '98' },
-  { label: 'Village Age', value: '200+ Years' },
-];
+const Stats = () => {
+  const [isVisible, setIsVisible] = useState(false);
 
-export default function StatsSection() {
+  // Load Devanagari font
+  useEffect(() => {
+    const link = document.createElement('link');
+    link.href = 'https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap';
+    link.rel = 'stylesheet';
+    document.head.appendChild(link);
+    
+    // Intersection Observer for animation
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    const statsSection = document.querySelector('.stats-section');
+    if (statsSection) {
+      observer.observe(statsSection);
+    }
+
+    return () => {
+      if (statsSection) {
+        observer.unobserve(statsSection);
+      }
+      document.head.removeChild(link);
+    };
+  }, []);
+
+  const statsData = [
+    {
+      id: 1,
+      title: 'कुल परिवार',
+      value: '420',
+      icon: '🏡',
+      color: '#10b981',
+      suffix: '+'
+    },
+    {
+      id: 2,
+      title: 'वाहन',
+      value: '185',
+      icon: '🚜',
+      color: '#f59e0b',
+      suffix: '+'
+    },
+    {
+      id: 3,
+      title: 'मतदाता',
+      value: '1,240',
+      icon: '🗳️',
+      color: '#3b82f6',
+      suffix: '+'
+    },
+    // {
+    //   id: 4,
+    //   title: 'खेती योग्य भूमि',
+    //   value: '850',
+    //   icon: '🌾',
+    //   color: '#22c55e',
+    //   suffix: ' एकड़'
+    // }
+  ];
+
   return (
-    <section className="py-16 bg-white">
-      <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center text-brown mb-12">
-          Village at a Glance
-        </h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {stats.map((stat, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="text-center p-6 bg-cream rounded-xl shadow-sm border border-cream-light"
+    <div className="stats-section">
+      <div className="stats-container">
+        {/* Section Header */}
+        <div className="stats-header">
+          <h2 className="stats-heading">गाँव की संख्याएँ</h2>
+          <p className="stats-subtitle">कलुपुरा गाँव के प्रमुख आँकड़े और सांख्यिकी</p>
+        </div>
+
+        {/* Stats Grid */}
+        <div className="stats-grid">
+          {statsData.map((stat, index) => (
+            <div 
+              className={`stat-card ${isVisible ? 'animate' : ''}`}
+              key={stat.id}
+              style={{ animationDelay: `${index * 0.2}s` }}
             >
-              <div className="text-3xl md:text-4xl font-bold text-green mb-2">
-                {stat.value}
+              {/* Background Pattern */}
+              <div className="stat-pattern"></div>
+              
+              {/* Icon Container */}
+              <div className="stat-icon-container">
+                <div 
+                  className="stat-icon"
+                  style={{ 
+                    background: `linear-gradient(135deg, ${stat.color}20, ${stat.color}40)`,
+                    border: `2px solid ${stat.color}30`
+                  }}
+                >
+                  <span 
+                    className="icon-text"
+                    style={{ color: stat.color }}
+                  >
+                    {stat.icon}
+                  </span>
+                </div>
               </div>
-              <div className="text-brown font-medium text-sm md:text-base">
-                {stat.label}
+
+              {/* Content */}
+              <div className="stat-content">
+                <div className="stat-value-container">
+                  <h3 className="stat-value">
+                    {stat.value}
+                    <span className="stat-suffix">{stat.suffix}</span>
+                  </h3>
+                </div>
+                <p className="stat-title">{stat.title}</p>
               </div>
-            </motion.div>
+
+              {/* Hover Effect */}
+              <div 
+                className="stat-hover-effect"
+                style={{ background: stat.color }}
+              ></div>
+            </div>
           ))}
         </div>
+
+        {/* Bottom Decoration */}
+        <div className="stats-decoration">
+          <div className="decoration-line"></div>
+          <div className="decoration-dot"></div>
+          <div className="decoration-line"></div>
+        </div>
       </div>
-    </section>
+    </div>
   );
-}
+};
+
+export default Stats;
