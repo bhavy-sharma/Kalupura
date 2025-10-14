@@ -21,7 +21,7 @@ const AdminDashboard = () => {
       title: 'सभी आवेदन',
       description: 'नए पंजीकरण और अपडेट आवेदन देखें',
       icon: '📄',
-      path: '/admin/aarequests',
+      path: '/admin/allrequest',
       color: '#10B981' // green
     },
     {
