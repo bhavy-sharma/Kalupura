@@ -29,9 +29,11 @@ function AllComplaint() {
     if (!confirm('क्या आप वाकई इस शिकायत को हटाना चाहते हैं? यह क्रिया पूर्ववत नहीं की जा सकती।')) return;
 
     try {
-      const res = await fetch(`/api/admin/addcomplaint/${id}`, {
-        method: 'DELETE',
-      });
+    const res= await fetch(`/api/admin/deletecomplaint`, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ id }), // send id in body
+});
 
       if (res.ok) {
         setMessage('✅ शिकायत सफलतापूर्वक हटा दी गई!');
@@ -41,6 +43,7 @@ function AllComplaint() {
         setMessage('❌ शिकायत हटाने में विफल');
       }
     } catch (err) {
+      console.log(err)
       setMessage('❌ नेटवर्क त्रुटि');
     }
   };
@@ -88,7 +91,7 @@ function AllComplaint() {
                     <span className="font-bold text-gray-800">विषय:</span> {comp.subject || '—'}
                   </div>
                   <div className="text-gray-700 mb-2 whitespace-pre-line">
-                    {comp.message || '—'}
+                    {comp.msg || '—'}
                   </div>
                   <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-600">
                     <span>नाम: {comp.name || '—'}</span>

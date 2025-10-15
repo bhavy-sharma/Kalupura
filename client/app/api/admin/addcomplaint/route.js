@@ -1,14 +1,14 @@
 import { connectDB } from "@/lib/mongodb";
-import Complaint from "@/model/Complaint.models";
+import Complaint from "@/model/Contact.models";
 
 export const POST = async (request) => {
    try {
     await connectDB();
-    const { MemberName,HeadOfFamilyName,PhoneNumber,Complaint,VillageName}= await request.json();
-    if (!MemberName || !HeadOfFamilyName || !PhoneNumber || !Complaint || !VillageName) {
+    const {name,email,phone,subject, msg}= await request.json();
+    if (!name || !email || !phone || !subject || !msg) {
        return new Response(JSON.stringify({ message: "All fields are required" }), { status: 400 })
     }
-    const newComplaint = await Complaint.create({ MemberName, HeadOfFamilyName,PhoneNumber, Complaint, VillageName })
+    const newComplaint = await Complaint.create({ name,email,phone,subject, msg });
     return new Response(JSON.stringify(newComplaint), { status: 201 })
    } catch (error) {
      console.error(error);

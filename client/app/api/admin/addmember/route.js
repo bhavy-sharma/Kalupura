@@ -18,7 +18,7 @@ export const POST = async (request) => {
 
 
     } catch (error) {
-        console.error("Full error:", error); // 👈 Ye important hai
+        console.error("Full error:", error); 
         return new Response(
             JSON.stringify({ message: "Internal Server Error", error: error.message }),
             { status: 500 }

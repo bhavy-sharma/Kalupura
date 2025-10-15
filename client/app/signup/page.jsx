@@ -8,7 +8,7 @@ export default function SignupPage() {
     name: '',
     dob: '',
     phone: '',
-    email: '',
+    email: '',  
     qualification: '',
     occupation: '',
     maritalStatus: 'single', // 'single', 'married', 'divorced', 'widowed'
