@@ -62,7 +62,7 @@ const Footer = () => {
             </p>
             <div className="footer-made-with">
               <span>Made with ❤️ by </span>
-              <span className="developer-name">Bhavy Sharma& Anant Pratap Singh</span>
+              <span className="developer-name">Bhavy Sharma</span>
             </div>
           </div>
 
