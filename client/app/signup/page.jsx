@@ -136,7 +136,7 @@ export default function SignupPage() {
 
       if (res.ok) {
         localStorage.setItem('token', data.token);
-        router.push('/dashboard');
+        router.push('/');
       } else {
         setError(data.message || 'पंजीकरण विफल। कृपया पुनः प्रयास करें।');
       }
