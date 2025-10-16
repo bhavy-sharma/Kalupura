@@ -47,6 +47,22 @@ const AdminDashboard = () => {
       icon: '📢',
       path: '/admin/allcomplaint',
       color: '#F59E0B' // amber
+    },
+    {
+      id: 'addEvent',
+      title: 'विशेष कार्यक्रम जोड़ें',
+      description: 'नए विशेष कार्यक्रम जोड़ें',
+      icon: '➕',
+      path: '/admin/addSpecialEvent',
+      color: ' #3B82F6' // blue
+    },
+    {
+      id: 'addInfo',
+      title: 'गाँव की जानकारी जोड़ें',
+      description: 'गाँव की नई जानकारी जोड़ें',
+      icon: '➕',
+      path: '/admin/addInfoVillage',
+      color: ' #10B981' 
     }
   ];
 

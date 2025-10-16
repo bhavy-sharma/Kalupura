@@ -25,7 +25,7 @@ const ContactPage = () => {
     e.preventDefault();
     try {
       setIsLoading(true);
-      const res = await fetch("/api/admin/addcomplaint", {
+      const res = await fetch("http://localhost:5000/api/v1/kalupra/addcomplaint", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

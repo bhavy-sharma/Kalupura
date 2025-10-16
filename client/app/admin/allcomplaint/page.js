@@ -10,7 +10,7 @@ function AllComplaint() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch('/api/admin/addcomplaint');
+        const res = await fetch('http://localhost:5000/api/v1/kalupra/getcomplaint');
         if (!res.ok) throw new Error('Failed to fetch complaints');
         const data = await res.json();
         setComplaints(Array.isArray(data) ? data : []);
@@ -29,7 +29,7 @@ function AllComplaint() {
     if (!confirm('क्या आप वाकई इस शिकायत को हटाना चाहते हैं? यह क्रिया पूर्ववत नहीं की जा सकती।')) return;
 
     try {
-    const res= await fetch(`/api/admin/deletecomplaint`, {
+    const res= await fetch(`http://localhost:5000/api/v1/kalupra/deletecomplaint`, {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({ id }), // send id in body

@@ -1,11 +1,26 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './MediaGallery.css';
 
 const MediaGallery = () => {
   const [selectedMedia, setSelectedMedia] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+ const [mediaItems, setMediaItems] = useState([]);
+
+ useEffect(()=>{
+  const fetchMediaItems=async()=>{
+    try{
+      const res=await fetch("http://localhost:5000/api/v1/kalupra/getinfovillage");
+      const data=await res.json();
+      setMediaItems(data.infoVillage); 
+    }catch(err){
+      console.error("Error fetching media items:",err);
+    }
+  }
+  fetchMediaItems();
+ },[]);
+
 
   const mediaData = [
     {
@@ -70,7 +85,7 @@ const MediaGallery = () => {
 
       {/* Media Grid */}
       <div className="media-grid">
-        {mediaData.map((media, index) => (
+        {mediaItems.map((media, index) => (
           <div 
             key={media.id}
             className="media-card"
@@ -79,7 +94,7 @@ const MediaGallery = () => {
           >
             <div className="media-image-container">
               <img 
-                src={media.thumbnail} 
+                src={media.imageUrl} 
                 alt={media.title}
                 className="media-thumbnail"
               />
@@ -110,7 +125,7 @@ const MediaGallery = () => {
             {/* Media Content */}
             <div className="modal-media">
               <img 
-                src={selectedMedia.fullSize} 
+                src={selectedMedia.imageUrl} 
                 alt={selectedMedia.title}
                 className="modal-image"
               />

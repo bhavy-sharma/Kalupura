@@ -4,8 +4,25 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { FreeMode, Mousewheel } from 'swiper/modules';
 import 'swiper/swiper-bundle.css';
 import './Events.css';
+import { useEffect, useState } from 'react';
 
 const Events = () => {
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+
+    const fetchEvents = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/v1/kalupra/getevent");
+        const data = await res.json();
+        console.log("data:", data)
+        setEvents(data.events);
+      } catch (err) {
+        console.error("Error fetching events:", err);
+      }
+    }
+    fetchEvents();
+  }, [])
   const eventsData = [
     {
       id: 1,
@@ -75,17 +92,20 @@ const Events = () => {
         modules={[FreeMode, Mousewheel]}
         className="events-swiper"
       >
-        {eventsData.map((event) => (
+        {events.map((event) => (
           <SwiperSlide key={event.id} className="event-slide">
             <div className="event-card">
               <div className="event-image">
-                <img src={event.image} alt={event.title} />
+                <img src={event.imageUrl} alt={event.title} />
                 <div className="event-badge">{event.type}</div>
               </div>
-              
+
               <div className="event-content">
                 <h3 className="event-name">{event.title}</h3>
-                <p className="event-date">📅 {event.date}</p>
+                <p className="event-date">
+                  📅 {new Date(event.date).toISOString().split("T")[0]}
+                </p>
+
                 <p className="event-desc">{event.description}</p>
                 <button className="event-btn">अधिक जानें</button>
               </div>
