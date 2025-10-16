@@ -76,9 +76,9 @@ function Allfamily() {
               {data.map((member, index) => (
                 <tr key={member._id || index} className="hover:bg-gray-50">
                   <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700">{index + 1}</td>
-                  <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">{member.HeadOfFamily || '—'}</td>
-                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700">{member.MemberName || '—'}</td>
-                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700">{member.age || '—'}</td>
+                  <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">{member.name || '—'}</td>
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700">{member.memberOfFamily || '—'}</td>
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700">{member.dob || '—'}</td>
                   <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700">{member.gender || '—'}</td>
                   <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700">{member.phoneNumber || '—'}</td>
                   <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700">{member.AadhaarNumber || '—'}</td>

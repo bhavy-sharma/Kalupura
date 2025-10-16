@@ -133,7 +133,7 @@ export const createUser = async (req, res) => {
 export const getAllUsers = async (req, res) => {
   try {
     const users = await User.find();
-    return res.status(200).json({users});
+    return res.status(200).json(users);
   } catch (error) {
     return res.status(500).json({ message: "Internal Server Error" });
   }
@@ -177,6 +177,24 @@ export const addMembersToFamily = async (req, res) => {
   }
 };
 
+//update user isEnabled by admin
+export const updateUserStatus = async (req, res) => {
+  try {
+    const {id} = req.params;
+    const { isEnable } = req.body;
+    if (!id || isEnable === undefined) {
+      return res.status(400).json({ message: "ID and isEnable are required" });
+    }
+    const updatedUser = await User.findByIdAndUpdate(id, { isEnabled: isEnable }, { new: true });
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    } 
+    return res.status(200).json({ msg: "User status updated successfully", updatedUser });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+}
+
 //login user
 export const loginUser = async (req, res) => {
   try {
@@ -196,7 +214,7 @@ export const loginUser = async (req, res) => {
     const token= jwt.sign({ id: user._id, email: user.email, role: user.role }, secretKey, { expiresIn: "7d" });
     return res.status(200).json({ msg: "Login Successful", user, token });
   } catch (error) {
-    
+
     return res.status(500).json({ message: "Internal Server Error" });
   } 
 }
