@@ -33,6 +33,8 @@ export default function SignupPage() {
     headOfFamilyName: '',
     email: '',
     password: '',
+    role: 'headOFFamily',
+    memberOfFamily: ['no'],
   });
 
   const [error, setError] = useState('');
@@ -121,9 +123,10 @@ export default function SignupPage() {
         headOfFamilyName: formData.headOfFamilyName,
         email: formData.email,
         password: formData.password,
+        role: formData.role,
       };
 
-      const res = await fetch('/api/auth/signup', {
+      const res = await fetch('http://localhost:5000/api/v1/kalupra/createuser', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

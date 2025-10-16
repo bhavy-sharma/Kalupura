@@ -1,6 +1,8 @@
 import Complaint from "../models/contact.model.js";
 import InfoVillage from "../models/infoVillage.model.js";
 import SpecialEvent from "../models/specialEvent.model.js";
+import User from "../models/user.model.js";
+import jwt from "jsonwebtoken";
 
 //  Add Complaint
 export const AddComplaint = async (req, res) => {
@@ -106,3 +108,96 @@ export const GetInfoVillage = async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 }
+
+//create user
+export const createUser = async (req, res) => {
+  try {
+    const { name, fatherName, motherName, grandfatherName, grandmotherName, dob, dobTime, qualification, occupation, maritalStatus, marriageDate, dharam, jaati, hasVehicle, vehicleCount, vehicles, headOfFamilyName, email, password, role, memberOfFamily } = req.body;
+
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+      return res.status(400).json({ message: "User with this email already exists" });
+    }
+    if (!name || !fatherName || !motherName || !email || !password) {
+      return res.status(400).json({ message: "Name, Father Name, Mother Name, Email, and Password are required" });
+    }
+    const newUser = await User.create({ name, fatherName, motherName, grandfatherName, grandmotherName, dob, dobTime, qualification, occupation, maritalStatus, marriageDate, dharam, jaati, hasVehicle, vehicleCount, vehicles, headOfFamilyName, email, password, role, memberOfFamily });
+    return res.status(201).json({ msg: "User Created Successfully", newUser });
+
+  } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+}
+
+// Get All Users
+export const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find();
+    return res.status(200).json({users});
+  } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+}
+
+//update user by member of family
+export const addMembersToFamily = async (req, res) => {
+  try {
+    if (req.method !== "PUT") {
+      return res.status(405).json({ message: "Method not allowed" });
+    }
+
+    const { email, newMembers } = req.body;
+
+   
+    if (!email || !newMembers ) {
+      return res.status(400).json({ 
+        message: "Email and newMembers (array) are required" 
+      });
+    }
+
+   
+    const updatedUser = await User.findOneAndUpdate(
+      { email },
+      { $push: { memberOfFamily: { $each: newMembers } } },
+      { new: true } 
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    return res.status(200).json({ 
+      msg: "Members added successfully", 
+      user: updatedUser 
+    });
+
+  } catch (error) {
+    console.error("Error updating user:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+//login user
+export const loginUser = async (req, res) => {
+  try {
+    
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email and Password are required" });
+    }
+    const user = await User.findOne({ email, password });
+    if (!user) {
+      return res.status(401).json({ message: "Invalid Email or Password" });
+    }
+    const secretKey=process.env.JWT_SECRET;
+    if (!secretKey) {
+      return res.status(500).json({ message: "JWT Secret not configured" });
+    }
+    const token= jwt.sign({ id: user._id, email: user.email, role: user.role }, secretKey, { expiresIn: "7d" });
+    return res.status(200).json({ msg: "Login Successful", user, token });
+  } catch (error) {
+    
+    return res.status(500).json({ message: "Internal Server Error" });
+  } 
+}
+

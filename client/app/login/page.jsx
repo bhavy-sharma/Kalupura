@@ -16,7 +16,7 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      const res = await fetch('/api/auth/login', {
+      const res = await fetch('http://localhost:5000/api/v1/kalupra/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -27,11 +27,15 @@ export default function LoginPage() {
       if (res.ok) {
         // JWT token ko localStorage mein save karenge
         localStorage.setItem('token', data.token);
+        console.log("local sa",data.user)
         localStorage.setItem('user', JSON.stringify(data.user));
         
         // Success notification with village theme
         setTimeout(() => {
-          router.push('/dashboard');
+          if(data.user.role === 'admin'){
+            router.push('/admin');
+          }
+          router.push('/');
         }, 1000);
       } else {
         setError(data.message || 'लॉगिन विफल। कृपया पुनः प्रयास करें।');
