@@ -34,7 +34,7 @@ const userSchema = new mongoose.Schema({
     vehicleCount: { type: Number, default: 1 },
     vehicles: [vehicleSchema],
     aadharNumber: { type: String },
-    PencardNumber: { type: String },
+    panCardNumber: { type: String },
     headOfFamilyName: { type: String },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },

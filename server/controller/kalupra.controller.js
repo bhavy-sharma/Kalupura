@@ -112,7 +112,7 @@ export const GetInfoVillage = async (req, res) => {
 //create user
 export const createUser = async (req, res) => {
   try {
-    const { name, fatherName, motherName, grandfatherName, grandmotherName, dob, dobTime, qualification,gender,phoneNumber, occupation, maritalStatus, marriageDate, dharam, jaati, hasVehicle, vehicleCount, vehicles,aadharNumber,PencardNumber, headOfFamilyName, email, password, role, memberOfFamily } = req.body;
+    const { name, fatherName, motherName, grandfatherName, grandmotherName, dob, dobTime, qualification,gender,phoneNumber, occupation, maritalStatus, marriageDate, dharam, jaati, hasVehicle, vehicleCount, vehicles,aadharNumber,panCardNumber, headOfFamilyName, email, password, role, memberOfFamily } = req.body;
 
     const userExists = await User.findOne({ email });
     if (userExists) {
@@ -121,7 +121,7 @@ export const createUser = async (req, res) => {
     if (!name || !fatherName || !motherName || !email || !password) {
       return res.status(400).json({ message: "Name, Father Name, Mother Name, Email, and Password are required" });
     }
-    const newUser = await User.create({ name, fatherName, motherName, grandfatherName, grandmotherName, dob, dobTime, qualification,gender,phoneNumber, occupation, maritalStatus, marriageDate, dharam, jaati, hasVehicle, vehicleCount, vehicles,aadharNumber,PencardNumber, headOfFamilyName, email, password, role, memberOfFamily });
+    const newUser = await User.create({ name, fatherName, motherName, grandfatherName, grandmotherName, dob, dobTime, qualification,gender,phoneNumber, occupation, maritalStatus, marriageDate, dharam, jaati, hasVehicle, vehicleCount, vehicles,aadharNumber,panCardNumber, headOfFamilyName, email, password, role, memberOfFamily });
     return res.status(201).json({ msg: "User Created Successfully", newUser });
 
   } catch (error) {
