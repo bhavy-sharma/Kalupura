@@ -10,11 +10,11 @@ function AllRequest() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch('/api/admin/addmember');
+        const res = await fetch('http://localhost:5000/api/v1/kalupra/getallusers');
         if (!res.ok) throw new Error('Failed to fetch');
         const data = await res.json();
         const pending = Array.isArray(data)
-          ? data.filter(item => item.isEnable === null || item.isEnable === undefined)
+          ? data.filter(item => item.isEnabled === null || item.isEnabled === undefined)
           : [];
         setRequests(pending);
       } catch (err) {
@@ -100,13 +100,13 @@ function AllRequest() {
                 {/* Left: Info */}
                 <div className="flex-1">
                   <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-700">
-                    <div><span className="font-medium">नाम:</span> {req.MemberName || '—'}</div>
-                    <div><span className="font-medium">पिता/पति:</span> {req.HeadOfFamily || '—'}</div>
-                    <div><span className="font-medium">आयु:</span> {req.age || '—'} वर्ष</div>
+                    <div><span className="font-medium">नाम:</span> {req.name || '—'}</div>
+                    <div><span className="font-medium">पिता/पति:</span> {req.headOfFamilyName || '—'}</div>
+                    <div><span className="font-medium">जन्म तिथि:</span> {req.dob || '—'} </div>
                     <div><span className="font-medium">मोबाइल:</span> {req.phoneNumber || '—'}</div>
-                    <div><span className="font-medium">गाँव:</span> {req.VillageName || '—'}</div>
+                    <div><span className="font-medium">गाँव:</span> {req.VillageName || 'kalupra'}</div>
                     <div><span className="font-medium">पेशा:</span> {req.occupation || '—'}</div>
-                    <div><span className="font-medium">आधार:</span> {req.AadhaarNumber || '—'}</div>
+                    <div><span className="font-medium">आधार:</span> {req.aadharNumber || '—'}</div>
                   </div>
                 </div>
 

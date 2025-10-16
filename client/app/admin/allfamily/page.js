@@ -81,9 +81,9 @@ function Allfamily() {
                   <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700">{member.dob || '—'}</td>
                   <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700">{member.gender || '—'}</td>
                   <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700">{member.phoneNumber || '—'}</td>
-                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700">{member.AadhaarNumber || '—'}</td>
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700">{member.aadharNumber || '—'}</td>
                   <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700">{member.PencardNumber || '—'}</td>
-                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700">{member.VillageName || '—'}</td>
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700">{member.village || 'kalupra'}</td>
                   <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700">{member.occupation || '—'}</td>
                   <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700">{member.role || '—'}</td>
                 </tr>

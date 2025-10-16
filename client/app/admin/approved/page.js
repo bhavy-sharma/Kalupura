@@ -13,9 +13,11 @@ function Approve() {
         const res = await fetch('http://localhost:5000/api/v1/kalupra/getallusers');
         if (!res.ok) throw new Error('Failed to fetch');
         const data = await res.json();
+       
         const approved = Array.isArray(data)
-          ? data.filter(item => item.isEnable === true)
+          ? data.filter(item => item.isEnabled === true)
           : [];
+          
         setApprovedMembers(approved);
       } catch (err) {
         console.error("Error fetching approved members:", err);
@@ -81,13 +83,13 @@ function Approve() {
                 {/* Left: Member Info */}
                 <div className="flex-1">
                   <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-700">
-                    <div><span className="font-medium">नाम:</span> {member.MemberName || '—'}</div>
-                    <div><span className="font-medium">प्रमुख:</span> {member.HeadOfFamily || '—'}</div>
-                    <div><span className="font-medium">आयु:</span> {member.age || '—'} वर्ष</div>
+                    <div><span className="font-medium">नाम:</span> {member.name || '—'}</div>
+                    <div><span className="font-medium">प्रमुख:</span> {member.headOfFamilyName || '—'}</div>
+                    <div><span className="font-medium">जन्म तिथि:</span> {member.dob || '—'} </div>
                     <div><span className="font-medium">मोबाइल:</span> {member.phoneNumber || '—'}</div>
-                    <div><span className="font-medium">गाँव:</span> {member.VillageName || '—'}</div>
+                    <div><span className="font-medium">गाँव:</span> {member.VillageName || 'kalupra'}</div>
                     <div><span className="font-medium">पेशा:</span> {member.occupation || '—'}</div>
-                    <div><span className="font-medium">आधार:</span> {member.AadhaarNumber || '—'}</div>
+                    <div><span className="font-medium">आधार:</span> {member.aadharNumber || '—'}</div>
                   </div>
                 </div>
 
