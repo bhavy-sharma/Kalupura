@@ -10,10 +10,15 @@ function Allfamily() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch('/api/admin/addmember');
+        const res = await fetch('http://localhost:5000/api/v1/kalupra/getallusers');
         if (!res.ok) throw new Error('Failed to fetch data');
         const result = await res.json();
-        setData(Array.isArray(result) ? result : []);
+        
+        const approved = Array.isArray(result)
+          ? result.filter(item => item.role === "headOFFamily")
+          : [];
+         
+        setData(approved);
       } catch (err) {
         console.error("Error fetching family data:", err);
         setError("डेटा लोड करने में त्रुटि");

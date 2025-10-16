@@ -10,7 +10,7 @@ function Rejected() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch('/api/admin/addmember');
+        const res = await fetch('http://localhost:5000/api/v1/kalupra/getallusers');
         if (!res.ok) throw new Error('Failed to fetch');
         const data = await res.json();
         const rejected = Array.isArray(data)
@@ -32,7 +32,7 @@ function Rejected() {
     if (!confirm('क्या आप वाकई इस सदस्य को "अनुमोदित" में ले जाना चाहते हैं?')) return;
 
     try {
-      const res = await fetch(`/api/admin/addmember/${id}`, {
+      const res = await fetch(`http://localhost:5000/api/v1/kalupra/updateisEnabled/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ isEnable: true })

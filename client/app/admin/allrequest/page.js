@@ -29,8 +29,7 @@ function AllRequest() {
   }, []);
 
   const handleApprove = async (id) => {
-    try {
-      const res = await fetch(`/api/admin/addmember/${id}`, {
+    try {const res = await fetch(`http://localhost:5000/api/v1/kalupra/updateisEnabled/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ isEnable: true })
@@ -52,7 +51,7 @@ function AllRequest() {
     if (!confirm('क्या आप वाकई इस आवेदन को अस्वीकार करना चाहते हैं?')) return;
 
     try {
-      const res = await fetch(`/api/admin/addmember/${id}`, {
+      const res = await fetch(`http://localhost:5000/api/v1/kalupra/updateisEnabled/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ isEnable: false })

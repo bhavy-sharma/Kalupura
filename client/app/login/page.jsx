@@ -28,6 +28,7 @@ export default function LoginPage() {
         // JWT token ko localStorage mein save karenge
         localStorage.setItem('token', data.token);
         console.log("local sa",data.user)
+        console.log("token",data.token)
         localStorage.setItem('user', JSON.stringify(data.user));
         
         // Success notification with village theme
