@@ -1,11 +1,44 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { set } from 'mongoose';
 
 const AdminDashboard = () => {
   const [activeTab] = useState('dashboard');
+  const [complaints, setComplaints] = useState(null);
+  const [allFamily, setAllFamily] = useState(null);
+  const [allRequest, setAllRequest] = useState(null);
+  const [approved, setApproved] = useState(null);
+  const [rejected, setRejected] = useState(null);
+
+  useEffect(()=>{
+    const fetchData=async()=>{
+      try {
+        const res1=await fetch("http://localhost:5000/api/v1/kalupra/getcomplaint");
+      const data1= await res1.json();
+      setComplaints(data1.length);
+
+      const res2=await fetch("http://localhost:5000/api/v1/kalupra/getallusers");
+      const data2= await res2.json();
+      setAllFamily(data2.length);
+      
+      const requests = data2.filter(user => user.isEnabled === null);
+      setAllRequest(requests.length);
+
+      const approvedUsers = data2.filter(user => user.isEnabled === true);
+      setApproved(approvedUsers.length);
+
+      const rejectedUsers = data2.filter(user => user.isEnabled === false);
+      setRejected(rejectedUsers.length);
+      } catch (error) {
+        console.log(error)
+      }
+      
+    }
+    fetchData();
+  },[])
 
   const dashboardSections = [
     {
@@ -103,23 +136,23 @@ const AdminDashboard = () => {
           <h2 className="text-xl font-semibold text-gray-800 mb-4">सारांश</h2>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4 text-center">
             <div className="bg-blue-50 p-3 rounded-lg">
-              <p className="text-2xl font-bold text-blue-700">124</p>
+              <p className="text-2xl font-bold text-blue-700">{allFamily}</p>
               <p className="text-sm text-gray-600">परिवार</p>
             </div>
             <div className="bg-green-50 p-3 rounded-lg">
-              <p className="text-2xl font-bold text-green-700">32</p>
+              <p className="text-2xl font-bold text-green-700">{allRequest}</p>
               <p className="text-sm text-gray-600">आवेदन</p>
             </div>
             <div className="bg-purple-50 p-3 rounded-lg">
-              <p className="text-2xl font-bold text-purple-700">28</p>
+              <p className="text-2xl font-bold text-purple-700">{approved}</p>
               <p className="text-sm text-gray-600">अनुमोदित</p>
             </div>
             <div className="bg-red-50 p-3 rounded-lg">
-              <p className="text-2xl font-bold text-red-700">4</p>
+              <p className="text-2xl font-bold text-red-700">{rejected}</p>
               <p className="text-sm text-gray-600">अस्वीकृत</p>
             </div>
             <div className="bg-amber-50 p-3 rounded-lg">
-              <p className="text-2xl font-bold text-amber-700">7</p>
+              <p className="text-2xl font-bold text-amber-700">{complaints}</p>
               <p className="text-sm text-gray-600">शिकायतें</p>
             </div>
           </div>

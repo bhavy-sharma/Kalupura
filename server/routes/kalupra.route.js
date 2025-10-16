@@ -18,7 +18,7 @@ Router.route('/getinfovillage').get(GetInfoVillage);
 //user routes
  Router.route('/createuser').post(createUser);
  Router.route('/getallusers').get(getAllUsers);
- Router.route('/updatemember').post(addMembersToFamily);
+ Router.route('/updatemember').patch(addMembersToFamily);
  Router.route('/updateisEnabled/:id').patch(updateUserStatus);
 
  //login route

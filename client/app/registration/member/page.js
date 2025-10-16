@@ -2,8 +2,10 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
+import { a } from "framer-motion/dist/types.d-BJcRxCew";
 
 function UserRegister() {
+  const userData =localStorage.getItem("user");
   const [formData, setFormData] = useState({
     // Personal Info
     name: "",
@@ -13,6 +15,8 @@ function UserRegister() {
     grandmotherName: "",
     dob: "",
     dobTime: "",
+    gender: "",
+    phoneNumber: "",
 
     // Education & Work
     qualification: "",
@@ -23,6 +27,9 @@ function UserRegister() {
     marriageDate: "",
     dharam: "",
     jaati: "",
+    aadharNumber: "",
+    panCardNumber: "",
+    
 
     // Head of Family & Auth
     headOfFamilyName: "",
@@ -43,6 +50,7 @@ function UserRegister() {
     e.preventDefault();
     try {
       const res = await axios.post("http://localhost:5000/api/v1/kalupra/createuser", formData);
+      const updateData= await axios.patch("http://localhost:5000/api/v1/kalupra/addmembertofamily", { email: userData.email, newMembers: [formData.name] });  
       // member name or headof email
       console.log(res.data);
       alert("User Registered Successfully");

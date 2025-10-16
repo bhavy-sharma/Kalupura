@@ -142,7 +142,7 @@ export const getAllUsers = async (req, res) => {
 //update user by member of family
 export const addMembersToFamily = async (req, res) => {
   try {
-    if (req.method !== "PUT") {
+    if (req.method !== "PATCH") {
       return res.status(405).json({ message: "Method not allowed" });
     }
 
