@@ -24,45 +24,29 @@ export default function LoginPage() {
 
       const data = await res.json();
 
-      if (res.ok) {
-        // JWT token ko localStorage mein save karenge
+      if (res.ok && data.token && data.user) {
+        // Save JWT token and user securely in localStorage
         localStorage.setItem('token', data.token);
-        console.log("local sa",data.user)
-        console.log("token",data.token)
         localStorage.setItem('user', JSON.stringify(data.user));
-        
-        // Success notification with village theme
+
+        // Redirect based on role
         setTimeout(() => {
-          if(data.user.role === 'admin'){
+          if (data.user.role === 'admin') {
             router.push('/admin');
+          } else {
+            router.push('/');
           }
-          router.push('/');
-        }, 1000);
+        }, 800);
       } else {
         setError(data.message || 'लॉगिन विफल। कृपया पुनः प्रयास करें।');
       }
     } catch (err) {
+      console.error('Login error:', err);
       setError('कुछ गड़बड़ हुई। कृपया अपना कनेक्शन जाँचें।');
     } finally {
       setIsLoading(false);
     }
   };
-
-  // Reusable Input Field Component
-  const InputField = ({ label, type, value, onChange, placeholder, required = false }) => (
-    <div className="mb-6">
-      <label className="block text-gray-700 mb-3 font-medium text-lg">{label}</label>
-      <input
-        type={type}
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        className="w-full px-4 py-3 border-2 border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-200 bg-amber-50"
-        required={required}
-        disabled={isLoading}
-      />
-    </div>
-  );
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-amber-100 to-green-100 p-4">
@@ -71,7 +55,7 @@ export default function LoginPage() {
       <div className="fixed top-20 right-20 text-4xl opacity-20">🚜</div>
       <div className="fixed bottom-16 left-20 text-5xl opacity-20">🏡</div>
       <div className="fixed bottom-24 right-16 text-3xl opacity-20">🐄</div>
-      
+
       <div className="w-full max-w-md">
         {/* Village Header */}
         <div className="text-center mb-8">
@@ -94,28 +78,42 @@ export default function LoginPage() {
           )}
 
           <form onSubmit={handleSubmit}>
-            <InputField
-              label="📧 ईमेल पता"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="apna@email.darsh"
-              required
-            />
+            <div className="mb-6">
+              <label htmlFor="email" className="block text-gray-700 mb-3 font-medium text-lg">
+                📧 ईमेल पता
+              </label>
+              <input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="apna@email.darsh"
+                className="w-full px-4 py-3 border-2 border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-200 bg-amber-50"
+                required
+                disabled={isLoading}
+              />
+            </div>
 
-            <InputField
-              label="🔐 पासवर्ड"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="आपका गुप्त पासवर्ड"
-              required
-            />
+            <div className="mb-6">
+              <label htmlFor="password" className="block text-gray-700 mb-3 font-medium text-lg">
+                🔐 पासवर्ड
+              </label>
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="आपका गुप्त पासवर्ड"
+                className="w-full px-4 py-3 border-2 border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-200 bg-amber-50"
+                required
+                disabled={isLoading}
+              />
+            </div>
 
             {/* Forgot Password Link */}
             <div className="text-right mb-6">
-              <a 
-                href="/forgot-password" 
+              <a
+                href="/forgot-password"
                 className="text-amber-600 hover:text-amber-800 text-sm font-medium hover:underline"
               >
                 पासवर्ड भूल गए? 🤔
@@ -127,8 +125,8 @@ export default function LoginPage() {
               type="submit"
               disabled={isLoading}
               className={`w-full py-4 rounded-xl font-bold text-lg transition-all duration-300 shadow-lg flex items-center justify-center ${
-                isLoading 
-                  ? 'bg-gray-400 cursor-not-allowed' 
+                isLoading
+                  ? 'bg-gray-400 cursor-not-allowed'
                   : 'bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 hover:shadow-xl'
               }`}
             >
@@ -158,8 +156,8 @@ export default function LoginPage() {
           <div className="text-center">
             <p className="text-gray-600">
               नए सदस्य हैं?{' '}
-              <a 
-                href="/signup" 
+              <a
+                href="/signup"
                 className="text-green-600 hover:text-green-800 font-semibold text-lg hover:underline"
               >
                 यहाँ पंजीकरण करें 🌟

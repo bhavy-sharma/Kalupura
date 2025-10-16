@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 
 export default function SignupPage() {
   const [formData, setFormData] = useState({
-    // Personal & Family Info (Sequence wise)
+    // Personal & Family Info
     name: '',
     fatherName: '',
     motherName: '',
@@ -13,6 +13,10 @@ export default function SignupPage() {
     grandmotherName: '',
     dob: '',
     dobTime: '',
+    gender: '',
+    phoneNumber: '',
+    aadharNumber: '',
+    panCardNumber: '',
     
     // Education & Work
     qualification: '',
@@ -29,12 +33,11 @@ export default function SignupPage() {
     vehicleCount: 1,
     vehicles: [{ type: '', numberPlate: '', purchaseDate: '', insuranceExpiry: '' }],
     
-    // Head of Family & Auth
+    // Auth
     headOfFamilyName: '',
     email: '',
     password: '',
     role: 'headOFFamily',
-    memberOfFamily: ['no'],
   });
 
   const [error, setError] = useState('');
@@ -69,9 +72,28 @@ export default function SignupPage() {
     e.preventDefault();
     setError('');
 
-    // Basic validations
     if (!formData.name || !formData.fatherName || !formData.dob || !formData.email || !formData.password) {
       setError('सभी आवश्यक फ़ील्ड भरें।');
+      return;
+    }
+
+    if (!formData.phoneNumber || !/^[6-9]\d{9}$/.test(formData.phoneNumber)) {
+      setError('मान्य 10-अंकों का मोबाइल नंबर दर्ज करें।');
+      return;
+    }
+
+    if (!formData.gender) {
+      setError('लिंग चुनें।');
+      return;
+    }
+
+    if (formData.aadharNumber && !/^\d{12}$/.test(formData.aadharNumber)) {
+      setError('आधार नंबर 12 अंकों का होना चाहिए।');
+      return;
+    }
+
+    if (formData.panCardNumber && !/^[A-Z]{5}\d{4}[A-Z]{1}$/.test(formData.panCardNumber)) {
+      setError('PAN कार्ड नंबर वैध प्रारूप में नहीं है।');
       return;
     }
 
@@ -108,6 +130,10 @@ export default function SignupPage() {
         grandmotherName: formData.grandmotherName || null,
         dob: formData.dob,
         dobTime: formData.dobTime || null,
+        gender: formData.gender,
+        phoneNumber: formData.phoneNumber,
+        aadharNumber: formData.aadharNumber || null,
+        panCardNumber: formData.panCardNumber || null,
         qualification: formData.qualification || null,
         occupation: formData.occupation || null,
         maritalStatus: formData.maritalStatus,
@@ -145,23 +171,6 @@ export default function SignupPage() {
     }
   };
 
-  // Reusable Input Field Component with PascalCase
-  const InputField = ({ label, name, value, onChange, type = "text", placeholder = "", required = false, minLength }) => (
-    <div>
-      <label className="block text-gray-700 mb-2 font-medium">{label}</label>
-      <input
-        type={type}
-        name={name}
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        className="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-200 bg-white"
-        required={required}
-        minLength={minLength}
-      />
-    </div>
-  );
-
   return (
     <div className="flex items-center justify-center min-h-screen bg-amber-50 p-4">
       <div className="w-full max-w-4xl bg-white p-6 rounded-xl shadow-lg border border-amber-200">
@@ -193,54 +202,79 @@ export default function SignupPage() {
             
             <div className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <InputField 
-                  label="सदस्य का नाम *" 
-                  name="name" 
-                  value={formData.name} 
-                  onChange={handleChange} 
-                  required 
-                  placeholder="आपका पूरा नाम"
-                />
-                <InputField 
-                  label="पिता का नाम *" 
-                  name="fatherName" 
-                  value={formData.fatherName} 
-                  onChange={handleChange} 
-                  required 
-                  placeholder="पिता का पूरा नाम"
-                />
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <InputField 
-                  label="माता का नाम" 
-                  name="motherName" 
-                  value={formData.motherName} 
-                  onChange={handleChange} 
-                  placeholder="माता का पूरा नाम"
-                />
-                <InputField 
-                  label="दादा का नाम *" 
-                  name="grandfatherName" 
-                  value={formData.grandfatherName} 
-                  onChange={handleChange} 
-                  required 
-                  placeholder="दादा का पूरा नाम"
-                />
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <InputField 
-                  label="दादी का नाम" 
-                  name="grandmotherName" 
-                  value={formData.grandmotherName} 
-                  onChange={handleChange} 
-                  placeholder="दादी का पूरा नाम"
-                />
-                
                 <div>
-                  <label className="block text-gray-700 mb-1">जन्म तिथि *</label>
+                  <label htmlFor="name" className="block text-gray-700 mb-2 font-medium">सदस्य का नाम *</label>
+                  <input
+                    id="name"
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    placeholder="आपका पूरा नाम"
+                    className="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-200 bg-white"
+                    required
+                  />
+                </div>
+                <div>
+                  <label htmlFor="fatherName" className="block text-gray-700 mb-2 font-medium">पिता का नाम *</label>
+                  <input
+                    id="fatherName"
+                    type="text"
+                    name="fatherName"
+                    value={formData.fatherName}
+                    onChange={handleChange}
+                    placeholder="पिता का पूरा नाम"
+                    className="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-200 bg-white"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="motherName" className="block text-gray-700 mb-2 font-medium">माता का नाम</label>
+                  <input
+                    id="motherName"
+                    type="text"
+                    name="motherName"
+                    value={formData.motherName}
+                    onChange={handleChange}
+                    placeholder="माता का पूरा नाम"
+                    className="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-200 bg-white"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="grandfatherName" className="block text-gray-700 mb-2 font-medium">दादा का नाम *</label>
+                  <input
+                    id="grandfatherName"
+                    type="text"
+                    name="grandfatherName"
+                    value={formData.grandfatherName}
+                    onChange={handleChange}
+                    placeholder="दादा का पूरा नाम"
+                    className="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-200 bg-white"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="grandmotherName" className="block text-gray-700 mb-2 font-medium">दादी का नाम</label>
+                  <input
+                    id="grandmotherName"
+                    type="text"
+                    name="grandmotherName"
+                    value={formData.grandmotherName}
+                    onChange={handleChange}
+                    placeholder="दादी का पूरा नाम"
+                    className="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-200 bg-white"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="dob" className="block text-gray-700 mb-1">जन्म तिथि *</label>
                   <input 
+                    id="dob"
                     type="date" 
                     name="dob" 
                     value={formData.dob} 
@@ -253,8 +287,9 @@ export default function SignupPage() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-gray-700 mb-1">जन्म समय (वैकल्पिक)</label>
+                  <label htmlFor="dobTime" className="block text-gray-700 mb-1">जन्म समय (वैकल्पिक)</label>
                   <input 
+                    id="dobTime"
                     type="time" 
                     name="dobTime" 
                     value={formData.dobTime} 
@@ -262,15 +297,81 @@ export default function SignupPage() {
                     className="w-full px-3 py-2 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent" 
                   />
                 </div>
-                
-                <InputField 
-                  label="परिवार प्रमुख का नाम *" 
-                  name="headOfFamilyName" 
-                  value={formData.headOfFamilyName} 
-                  onChange={handleChange} 
-                  required 
-                  placeholder="परिवार मुखिया का नाम"
-                />
+                <div>
+                  <label htmlFor="headOfFamilyName" className="block text-gray-700 mb-2 font-medium">परिवार प्रमुख का नाम *</label>
+                  <input
+                    id="headOfFamilyName"
+                    type="text"
+                    name="headOfFamilyName"
+                    value={formData.headOfFamilyName}
+                    onChange={handleChange}
+                    placeholder="परिवार मुखिया का नाम"
+                    className="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-200 bg-white"
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* New Fields */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="gender" className="block text-gray-700 mb-2 font-medium">लिंग *</label>
+                  <select 
+                    id="gender"
+                    name="gender" 
+                    value={formData.gender} 
+                    onChange={handleChange} 
+                    className="w-full px-3 py-2 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                    required
+                  >
+                    <option value="">चुनें</option>
+                    <option value="male">पुरुष</option>
+                    <option value="female">महिला</option>
+                    <option value="other">अन्य</option>
+                  </select>
+                </div>
+                <div>
+                  <label htmlFor="phoneNumber" className="block text-gray-700 mb-2 font-medium">मोबाइल नंबर *</label>
+                  <input
+                    id="phoneNumber"
+                    type="tel"
+                    name="phoneNumber"
+                    value={formData.phoneNumber}
+                    onChange={handleChange}
+                    placeholder="9876543210"
+                    className="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-200 bg-white"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="aadharNumber" className="block text-gray-700 mb-2 font-medium">आधार नंबर (12 अंक)</label>
+                  <input
+                    id="aadharNumber"
+                    type="text"
+                    name="aadharNumber"
+                    value={formData.aadharNumber}
+                    onChange={handleChange}
+                    placeholder="123456789012"
+                    maxLength="12"
+                    className="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-200 bg-white"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="panCardNumber" className="block text-gray-700 mb-2 font-medium">PAN कार्ड नंबर</label>
+                  <input
+                    id="panCardNumber"
+                    type="text"
+                    name="panCardNumber"
+                    value={formData.panCardNumber}
+                    onChange={handleChange}
+                    placeholder="ABCDE1234F"
+                    maxLength="10"
+                    className="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-200 bg-white"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -281,22 +382,31 @@ export default function SignupPage() {
               <span className="text-2xl mr-3">📚</span>
               <h2 className="text-xl font-semibold text-green-800">शिक्षा एवं रोजगार</h2>
             </div>
-            
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <InputField 
-                label="शैक्षणिक योग्यता" 
-                name="qualification" 
-                value={formData.qualification} 
-                onChange={handleChange} 
-                placeholder="10वीं, 12वीं, स्नातक, आदि"
-              />
-              <InputField 
-                label="व्यवसाय/पेशा" 
-                name="occupation" 
-                value={formData.occupation} 
-                onChange={handleChange} 
-                placeholder="किसान, शिक्षक, मजदूर, व्यवसाय"
-              />
+              <div>
+                <label htmlFor="qualification" className="block text-gray-700 mb-2 font-medium">शैक्षणिक योग्यता</label>
+                <input
+                  id="qualification"
+                  type="text"
+                  name="qualification"
+                  value={formData.qualification}
+                  onChange={handleChange}
+                  placeholder="10वीं, 12वीं, स्नातक, आदि"
+                  className="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-200 bg-white"
+                />
+              </div>
+              <div>
+                <label htmlFor="occupation" className="block text-gray-700 mb-2 font-medium">व्यवसाय/पेशा</label>
+                <input
+                  id="occupation"
+                  type="text"
+                  name="occupation"
+                  value={formData.occupation}
+                  onChange={handleChange}
+                  placeholder="किसान, शिक्षक, मजदूर, व्यवसाय"
+                  className="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-200 bg-white"
+                />
+              </div>
             </div>
           </div>
 
@@ -306,12 +416,12 @@ export default function SignupPage() {
               <span className="text-2xl mr-3">💑</span>
               <h2 className="text-xl font-semibold text-blue-800">वैवाहिक एवं सामाजिक जानकारी</h2>
             </div>
-            
             <div className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-gray-700 mb-2">वैवाहिक स्थिति *</label>
+                  <label htmlFor="maritalStatus" className="block text-gray-700 mb-2 font-medium">वैवाहिक स्थिति *</label>
                   <select 
+                    id="maritalStatus"
                     name="maritalStatus" 
                     value={formData.maritalStatus} 
                     onChange={handleChange} 
@@ -326,8 +436,9 @@ export default function SignupPage() {
 
                 {formData.maritalStatus === 'married' && (
                   <div>
-                    <label className="block text-gray-700 mb-1">विवाह तिथि *</label>
+                    <label htmlFor="marriageDate" className="block text-gray-700 mb-1">विवाह तिथि *</label>
                     <input 
+                      id="marriageDate"
                       type="date" 
                       name="marriageDate" 
                       value={formData.marriageDate} 
@@ -340,12 +451,13 @@ export default function SignupPage() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-gray-700 mb-2">धर्म *</label>
+                  <label htmlFor="dharam" className="block text-gray-700 mb-2 font-medium">धर्म *</label>
                   <select 
+                    id="dharam"
                     name="dharam" 
                     value={formData.dharam} 
                     onChange={handleChange} 
-                    className="w-full px-3 py-2 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                    className="w-full px-3 py-2 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     required
                   >
                     <option value="">धर्म चुनें</option>
@@ -358,14 +470,14 @@ export default function SignupPage() {
                     <option value="other">अन्य</option>
                   </select>
                 </div>
-
                 <div>
-                  <label className="block text-gray-700 mb-2">जाति श्रेणी *</label>
+                  <label htmlFor="jaati" className="block text-gray-700 mb-2 font-medium">जाति श्रेणी *</label>
                   <select 
+                    id="jaati"
                     name="jaati" 
                     value={formData.jaati} 
                     onChange={handleChange} 
-                    className="w-full px-3 py-2 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                    className="w-full px-3 py-2 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     required
                   >
                     <option value="">जाति चुनें</option>
@@ -386,10 +498,10 @@ export default function SignupPage() {
               <span className="text-2xl mr-3">🚗</span>
               <h2 className="text-xl font-semibold text-red-800">वाहन जानकारी</h2>
             </div>
-            
             <div className="space-y-4">
-              <label className="flex items-center space-x-3 mb-4 p-3 bg-white rounded-lg border border-red-200">
+              <label htmlFor="hasVehicle" className="flex items-center space-x-3 mb-4 p-3 bg-white rounded-lg border border-red-200">
                 <input 
+                  id="hasVehicle"
                   type="checkbox" 
                   name="hasVehicle" 
                   checked={formData.hasVehicle} 
@@ -402,8 +514,9 @@ export default function SignupPage() {
               {formData.hasVehicle && (
                 <>
                   <div className="bg-white p-4 rounded-lg border border-red-200">
-                    <label className="block text-gray-700 mb-2 font-medium">वाहनों की संख्या चुनें (1-10)</label>
+                    <label htmlFor="vehicleCount" className="block text-gray-700 mb-2 font-medium">वाहनों की संख्या चुनें (1-10)</label>
                     <select
+                      id="vehicleCount"
                       value={formData.vehicleCount}
                       onChange={(e) => handleVehicleCountChange(Number(e.target.value))}
                       className="w-full px-3 py-2 border border-red-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
@@ -422,30 +535,48 @@ export default function SignupPage() {
                           <h3 className="font-semibold text-gray-800 text-lg">वाहन {index + 1} की जानकारी</h3>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <InputField 
-                            label="वाहन प्रकार *" 
-                            value={vehicle.type} 
-                            onChange={(e) => handleVehicleFieldChange(index, 'type', e.target.value)} 
-                            placeholder="कार, बाइक, ट्रैक्टर, स्कूटर" 
-                          />
-                          <InputField 
-                            label="नंबर प्लेट *" 
-                            value={vehicle.numberPlate} 
-                            onChange={(e) => handleVehicleFieldChange(index, 'numberPlate', e.target.value)} 
-                            placeholder="UP12AB1234" 
-                          />
-                          <InputField 
-                            label="खरीद तिथि (वैकल्पिक)" 
-                            type="date" 
-                            value={vehicle.purchaseDate} 
-                            onChange={(e) => handleVehicleFieldChange(index, 'purchaseDate', e.target.value)} 
-                          />
-                          <InputField 
-                            label="बीमा समाप्ति तिथि (वैकल्पिक)" 
-                            type="date" 
-                            value={vehicle.insuranceExpiry} 
-                            onChange={(e) => handleVehicleFieldChange(index, 'insuranceExpiry', e.target.value)} 
-                          />
+                          <div>
+                            <label htmlFor={`vehicle-${index}-type`} className="block text-gray-700 mb-2 font-medium">वाहन प्रकार *</label>
+                            <input
+                              id={`vehicle-${index}-type`}
+                              type="text"
+                              value={vehicle.type}
+                              onChange={(e) => handleVehicleFieldChange(index, 'type', e.target.value)}
+                              placeholder="कार, बाइक, ट्रैक्टर, स्कूटर"
+                              className="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-200 bg-white"
+                            />
+                          </div>
+                          <div>
+                            <label htmlFor={`vehicle-${index}-numberPlate`} className="block text-gray-700 mb-2 font-medium">नंबर प्लेट *</label>
+                            <input
+                              id={`vehicle-${index}-numberPlate`}
+                              type="text"
+                              value={vehicle.numberPlate}
+                              onChange={(e) => handleVehicleFieldChange(index, 'numberPlate', e.target.value)}
+                              placeholder="UP12AB1234"
+                              className="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-200 bg-white"
+                            />
+                          </div>
+                          <div>
+                            <label htmlFor={`vehicle-${index}-purchaseDate`} className="block text-gray-700 mb-1">खरीद तिथि (वैकल्पिक)</label>
+                            <input
+                              id={`vehicle-${index}-purchaseDate`}
+                              type="date"
+                              value={vehicle.purchaseDate}
+                              onChange={(e) => handleVehicleFieldChange(index, 'purchaseDate', e.target.value)}
+                              className="w-full px-3 py-2 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                            />
+                          </div>
+                          <div>
+                            <label htmlFor={`vehicle-${index}-insuranceExpiry`} className="block text-gray-700 mb-1">बीमा समाप्ति तिथि (वैकल्पिक)</label>
+                            <input
+                              id={`vehicle-${index}-insuranceExpiry`}
+                              type="date"
+                              value={vehicle.insuranceExpiry}
+                              onChange={(e) => handleVehicleFieldChange(index, 'insuranceExpiry', e.target.value)}
+                              className="w-full px-3 py-2 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                            />
+                          </div>
                         </div>
                       </div>
                     ))}
@@ -461,27 +592,34 @@ export default function SignupPage() {
               <span className="text-2xl mr-3">🔐</span>
               <h2 className="text-xl font-semibold text-purple-800">लॉगिन जानकारी</h2>
             </div>
-            
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <InputField 
-                label="ईमेल पता *" 
-                name="email" 
-                type="email" 
-                value={formData.email} 
-                onChange={handleChange} 
-                required 
-                placeholder="example@gaon.com"
-              />
-              <InputField 
-                label="पासवर्ड *" 
-                name="password" 
-                type="password" 
-                value={formData.password} 
-                onChange={handleChange} 
-                required 
-                minLength="6"
-                placeholder="कम से कम 6 अक्षर"
-              />
+              <div>
+                <label htmlFor="email" className="block text-gray-700 mb-2 font-medium">ईमेल पता *</label>
+                <input
+                  id="email"
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="example@gaon.com"
+                  className="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-200 bg-white"
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="password" className="block text-gray-700 mb-2 font-medium">पासवर्ड *</label>
+                <input
+                  id="password"
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  placeholder="कम से कम 6 अक्षर"
+                  className="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-200 bg-white"
+                  required
+                  minLength="6"
+                />
+              </div>
             </div>
           </div>
 
@@ -508,7 +646,6 @@ export default function SignupPage() {
           </p>
         </div>
 
-        {/* Village Theme Footer */}
         <div className="mt-6 text-center text-amber-700 text-sm">
           <p>🌾 गाँव कलुपुरा - जहाँ हर परिवार एक परिवार है 🌾</p>
         </div>
