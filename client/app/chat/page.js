@@ -91,7 +91,7 @@ export default function Chat() {
               <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-400 border-2 border-white rounded-full"></div>
             </div>
             <div>
-              <h2 className="font-semibold">{userData.roomId}</h2>
+              <h2 className="font-semibold">Kalupura</h2>
               <p className="text-xs text-gray-300">online</p>
             </div>
           </div>
