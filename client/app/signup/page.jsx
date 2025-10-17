@@ -12,6 +12,7 @@ export default function SignupPage() {
     grandfatherName: '',
     grandmotherName: '',
     dob: '',
+    age: '', // ✅ Auto-calculated age
     dobTime: '',
     gender: '',
     phoneNumber: '',
@@ -43,12 +44,27 @@ export default function SignupPage() {
   const [error, setError] = useState('');
   const router = useRouter();
 
+  // ✅ Enhanced handleChange with auto age calculation
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
+    let updatedData = {
+      ...formData,
       [name]: type === 'checkbox' ? checked : value,
-    }));
+    };
+
+    // Auto-calculate age when DOB changes
+    if (name === 'dob' && value) {
+      const dob = new Date(value);
+      const today = new Date();
+      let calculatedAge = today.getFullYear() - dob.getFullYear();
+      const monthDiff = today.getMonth() - dob.getMonth();
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+        calculatedAge--;
+      }
+      updatedData.age = calculatedAge > 0 ? calculatedAge : '';
+    }
+
+    setFormData(updatedData);
   };
 
   const handleVehicleCountChange = (count) => {
@@ -281,6 +297,21 @@ export default function SignupPage() {
                     onChange={handleChange} 
                     className="w-full px-3 py-2 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent" 
                     required 
+                  />
+                </div>
+              </div>
+
+              {/* ✅ NEW: Age Field (Auto-calculated) */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div></div> {/* Spacer */}
+                <div>
+                  <label htmlFor="age" className="block text-gray-700 mb-1">आयु (स्वचालित)</label>
+                  <input 
+                    id="age"
+                    type="text" 
+                    value={formData.age ? `${formData.age} वर्ष` : ''}
+                    readOnly
+                    className="w-full px-3 py-2 border border-amber-300 rounded-lg bg-amber-100 text-amber-800 font-medium"
                   />
                 </div>
               </div>

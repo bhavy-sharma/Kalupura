@@ -40,22 +40,12 @@ const Header = () => {
     setIsLoggedIn(false);
     setUser(null);
     setIsProfileOpen(false);
-    setIsMenuOpen(false); // Close mobile menu on logout
+    setIsMenuOpen(false);
     window.location.href = '/';
   };
 
   const shouldShowChat = isLoggedIn && user?.isEnabled === true;
   const canAddMember = isLoggedIn && (user?.role === 'admin' || user?.role === 'headOFFamily');
-
-  // Close menus when clicking outside (optional enhancement)
-  useEffect(() => {
-    const handleClickOutside = () => {
-      if (isProfileOpen) setIsProfileOpen(false);
-      if (isMenuOpen) setIsMenuOpen(false);
-    };
-    window.addEventListener('click', handleClickOutside);
-    return () => window.removeEventListener('click', handleClickOutside);
-  }, [isProfileOpen, isMenuOpen]);
 
   return (
     <header className="website-header">
@@ -139,7 +129,7 @@ const Header = () => {
         </button>
       </div>
 
-      {/* Mobile Menu (Full Overlay or Slide-in) */}
+      {/* Mobile Menu (Full Overlay) */}
       {isMenuOpen && (
         <div className="mobile-menu-overlay" onClick={() => setIsMenuOpen(false)}>
           <div 
