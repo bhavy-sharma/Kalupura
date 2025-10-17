@@ -22,6 +22,7 @@ export default function AddSpecialEvent() {
         const res = await fetch("http://localhost:5000/api/v1/kalupra/getevent");
         if (res.ok) {
           const data = await res.json();
+          console.log("event:",data)
           setEvents(data);
         }
       } catch (err) {

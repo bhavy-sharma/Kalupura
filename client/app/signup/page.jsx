@@ -147,6 +147,7 @@ export default function SignupPage() {
         dob: formData.dob,
         dobTime: formData.dobTime || null,
         gender: formData.gender,
+        age: formData.age || null,
         phoneNumber: formData.phoneNumber,
         aadharNumber: formData.aadharNumber || null,
         panCardNumber: formData.panCardNumber || null,
@@ -175,6 +176,7 @@ export default function SignupPage() {
       });
 
       const data = await res.json();
+      console.log("paylode:",payload)
 
       if (res.ok) {
         localStorage.setItem('token', data.token);

@@ -148,6 +148,7 @@ export const GetInfoVillage = async (req, res) => {
 //create user
 export const createUser = async (req, res) => {
   try {
+    
     const { name, fatherName, motherName, grandfatherName, grandmotherName, dob, dobTime, qualification,gender,phoneNumber,age, occupation, maritalStatus, marriageDate, dharam, jaati, hasVehicle, vehicleCount, vehicles,aadharNumber,panCardNumber, headOfFamilyName, email, password, role, memberOfFamily } = req.body;
 
     const userExists = await User.findOne({ email });
