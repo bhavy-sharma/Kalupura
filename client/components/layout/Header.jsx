@@ -59,7 +59,7 @@ const Header = () => {
           <ul>
             <li><Link href="/">Home</Link></li>
             <li><Link href="/about">About</Link></li>
-            <li><Link href="/announcements">Announcements</Link></li>
+            <li><Link href="/chat">Chat</Link></li>
             <li><Link href="/contact">Contact</Link></li>
           </ul>
         </nav>
