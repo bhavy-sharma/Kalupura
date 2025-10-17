@@ -40,6 +40,7 @@ const userSchema = new mongoose.Schema({
     password: { type: String, required: true },
     role: { type: String, enum: ["admin", "headOFFamily", "member"], default: "user" },
     memberOfFamily: [{ type: String, required: true, default: "no" }],
+    roomId: { type: String,default:"main"},
     isEnabled: { type: Boolean, default: null },
 }, { timestamps: true })
 
