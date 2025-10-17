@@ -92,7 +92,7 @@ const Header = () => {
                   </div>
                   {canAddMember && (
                     <Link
-                      href="/add-member"
+                      href="/registration/member"
                       className="profile-menu-link"
                       onClick={() => setIsProfileOpen(false)}
                     >
