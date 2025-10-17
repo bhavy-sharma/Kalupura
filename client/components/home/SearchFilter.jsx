@@ -1,36 +1,54 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 
 // 🔹 Replace this with your actual data (from API or props)
-const initialData = [
-  {
-    id: 1,
-    name: "Rahul Sharma",
-    fatherName: "Somesh Sharma",
-    grandfatherName: "Ramlal Sharma",
-    age: 28,
-    phone: "9876543210"
-  },
-  {
-    id: 2,
-    name: "Priya Devi",
-    fatherName: "Rajesh kumar",
-    grandfatherName: "Mohan laal",
-    age: 24,
-    phone: "8765432109"
-  },
-  {
-    id: 3,
-    name: "Amit Singh",
-    fatherName: "Vijay Singh",
-    grandfatherName: "Gopal Singh",
-    age: 32,
-    phone: "7654321098"
-  }
-];
+// const initialData = [
+//   {
+//     id: 1,
+//     name: "Rahul Sharma",
+//     fatherName: "Somesh Sharma",
+//     grandfatherName: "Ramlal Sharma",
+//     age: 28,
+//     phone: "9876543210"
+//   },
+//   {
+//     id: 2,
+//     name: "Priya Devi",
+//     fatherName: "Rajesh kumar",
+//     grandfatherName: "Mohan laal",
+//     age: 24,
+//     phone: "8765432109"
+//   },
+//   {
+//     id: 3,
+//     name: "Amit Singh",
+//     fatherName: "Vijay Singh",
+//     grandfatherName: "Gopal Singh",
+//     age: 32,
+//     phone: "7654321098"
+//   }
+// ];
 
 const SearchFilter = () => {
+  const [data, setData] = useState([]);
+  
+  useEffect(()=>{
+    const fetchData=async()=>{
+      try {
+        const res=await fetch("http://localhost:5000/api/v1/kalupra/getallusers");
+      const datas= await res.json();
+      setData(datas);
+      console.log("data:search", datas)
+
+     
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchData();
+  },[])
+
   const [filters, setFilters] = useState({
     name: '',
     fatherName: '',
@@ -42,7 +60,7 @@ const SearchFilter = () => {
 
   // 🔹 Filter logic
   const filteredData = useMemo(() => {
-    return initialData.filter(item => {
+    return data.filter(item => {
       const matchesName = filters.name
         ? item.name.toLowerCase().includes(filters.name.toLowerCase())
         : true;
@@ -170,7 +188,7 @@ const SearchFilter = () => {
                   </div>
                   <div className="text-right text-gray-700">
                     <p>Age: {item.age} वर्ष</p>
-                    <p>Phone: {item.phone}</p>
+                    <p>Phone: {item.phoneNumber}</p>
                   </div>
                 </div>
               </div>
