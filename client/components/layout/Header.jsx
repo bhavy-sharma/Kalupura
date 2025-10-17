@@ -3,6 +3,8 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import './Header.css';
+import axios from 'axios';
+
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -32,7 +34,24 @@ const Header = () => {
     checkAuth();
     window.addEventListener('storage', checkAuth);
     return () => window.removeEventListener('storage', checkAuth);
-  }, []);
+  }, [isLoggedIn]);
+
+  useEffect(()=>{
+     const userData = localStorage.getItem('user');
+    const fetchUser=async()=>{
+      try {
+        const res=await axios.get("http://localhost:5000/api/v1/kalupra/getuserbyid/"+JSON.parse(userData)._id);
+        setUser(res.data);
+      } catch (error) {
+        console.log(error)
+        
+      }
+    }
+    if(userData){
+      fetchUser();
+    }
+
+  },[])
 
   const handleLogout = () => {
     localStorage.removeItem('token');

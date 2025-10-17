@@ -1,5 +1,5 @@
 import express from 'express';
-import {AddComplaint, AddInfoVillage, addMembersToFamily, AddSpecialEvent, createUser, DeleteComplaint, GetComplaints, GetInfoVillage, GetSpecialEvent, getAllUsers, loginUser, updateUserStatus, DeleteInfoVillage, DeleteSpecialEvent } from '../controller/kalupra.controller.js';
+import {AddComplaint, AddInfoVillage, addMembersToFamily, AddSpecialEvent, createUser, DeleteComplaint, GetComplaints, GetInfoVillage, GetSpecialEvent, getAllUsers, loginUser, updateUserStatus, DeleteInfoVillage, DeleteSpecialEvent, getUserById } from '../controller/kalupra.controller.js';
 
 const Router = express.Router();
 //contant form ka routes
@@ -22,6 +22,7 @@ Router.route('/deleteinfovillage/:id').delete(DeleteInfoVillage);
  Router.route('/getallusers').get(getAllUsers);
  Router.route('/updatemember').patch(addMembersToFamily);
  Router.route('/updateisEnabled/:id').patch(updateUserStatus);
+ Router.route('/getuserbyid/:id').get(getUserById)
 
  //login route
  Router.route('/login').post(loginUser);
