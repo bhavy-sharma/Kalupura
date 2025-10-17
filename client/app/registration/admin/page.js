@@ -2,6 +2,8 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 
 function UserRegister() {
   const [formData, setFormData] = useState({
@@ -20,13 +22,12 @@ function UserRegister() {
 
     // Marital & Social
     maritalStatus: "single",
-    marriageDate: "" || "user is not married",
+    marriageDate: "",
     dharam: "",
     jaati: "",
 
     // Vehicles
     hasVehicle: false,
-    vehicleCount: 1,
     vehicles: [{ type: "", numberPlate: "", purchaseDate: "", insuranceExpiry: "" }],
 
     // Head of Family & Auth
@@ -72,151 +73,238 @@ function UserRegister() {
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gradient-to-br from-indigo-100 via-white to-indigo-200 p-6">
+    <>
+    <Header/>
+    <div className="min-h-screen flex justify-center items-start pt-8 pb-12 px-4 bg-gradient-to-b from-amber-50 via-amber-100 to-amber-200">
       <motion.div
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className="bg-white shadow-2xl rounded-2xl p-8 w-full max-w-2xl overflow-y-auto max-h-[90vh]"
+        transition={{ duration: 0.6 }}
+        className="w-full max-w-2xl bg-amber-50 border-2 border-amber-700 rounded-xl shadow-lg p-6 relative overflow-hidden"
+        style={{
+          boxShadow: '0 10px 25px rgba(120, 80, 40, 0.2)',
+          backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\"100\" height=\"100\" viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cpath d=\"M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z\" fill=\"%23d97706\" fill-opacity=\"0.06\" fill-rule=\"evenodd\"/%3E%3C/svg%3E")',
+        }}
       >
-        <h2 className="text-2xl font-semibold text-center mb-6 text-indigo-700">
-          🧾 User Registration
+        {/* Decorative top border */}
+        <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-amber-800 via-amber-600 to-amber-800"></div>
+
+        <h2 className="text-2xl font-bold text-center mb-6 text-amber-900 tracking-wide">
+          🏡 ग्रामीण पंजीकरण फॉर्म
         </h2>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-5">
           {/* Personal Info */}
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label>Name</label>
-              <input type="text" name="name" value={formData.name} onChange={handleChange} className="input" required />
-            </div>
-            <div>
-              <label>Father Name</label>
-              <input type="text" name="fatherName" value={formData.fatherName} onChange={handleChange} className="input" />
-            </div>
-            <div>
-              <label>Mother Name</label>
-              <input type="text" name="motherName" value={formData.motherName} onChange={handleChange} className="input" />
-            </div>
-            <div>
-              <label>Grandfather Name</label>
-              <input type="text" name="grandfatherName" value={formData.grandfatherName} onChange={handleChange} className="input" />
-            </div>
-            <div>
-              <label>Grandmother Name</label>
-              <input type="text" name="grandmotherName" value={formData.grandmotherName} onChange={handleChange} className="input" />
-            </div>
-            <div>
-              <label>Date of Birth</label>
-              <input type="date" name="dob" value={formData.dob} onChange={handleChange} className="input" />
-            </div>
-            <div>
-              <label>DOB Time</label>
-              <input type="time" name="dobTime" value={formData.dobTime} onChange={handleChange} className="input" />
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {[
+              { label: "नाम", name: "name", required: true },
+              { label: "पिता का नाम", name: "fatherName" },
+              { label: "माता का नाम", name: "motherName" },
+              { label: "दादा/नाना का नाम", name: "grandfatherName" },
+              { label: "दादी/नानी का नाम", name: "grandmotherName" },
+              { label: "जन्म तिथि", name: "dob", type: "date" },
+              { label: "जन्म समय", name: "dobTime", type: "time" },
+            ].map((field, i) => (
+              <div key={i}>
+                <label className="block text-amber-800 text-sm font-medium mb-1">{field.label}</label>
+                <input
+                  type={field.type || "text"}
+                  name={field.name}
+                  value={formData[field.name]}
+                  onChange={handleChange}
+                  required={field.required}
+                  className="w-full px-3 py-2 border border-amber-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white placeholder-amber-400 text-amber-900"
+                />
+              </div>
+            ))}
           </div>
 
           {/* Education & Work */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label>Qualification</label>
-              <input type="text" name="qualification" value={formData.qualification} onChange={handleChange} className="input" />
+              <label className="block text-amber-800 text-sm font-medium mb-1">शैक्षणिक योग्यता</label>
+              <input
+                type="text"
+                name="qualification"
+                value={formData.qualification}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-amber-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white placeholder-amber-400 text-amber-900"
+              />
             </div>
             <div>
-              <label>Occupation</label>
-              <input type="text" name="occupation" value={formData.occupation} onChange={handleChange} className="input" />
+              <label className="block text-amber-800 text-sm font-medium mb-1">व्यवसाय</label>
+              <input
+                type="text"
+                name="occupation"
+                value={formData.occupation}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-amber-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white placeholder-amber-400 text-amber-900"
+              />
             </div>
           </div>
 
           {/* Marital & Social */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label>Marital Status</label>
+              <label className="block text-amber-800 text-sm font-medium mb-1">वैवाहिक स्थिति</label>
               <select
                 name="maritalStatus"
                 value={formData.maritalStatus}
                 onChange={handleChange}
-                className="input"
+                className="w-full px-3 py-2 border border-amber-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white text-amber-900"
               >
-                <option value="single">Single</option>
-                <option value="married">Married</option>
-                <option value="divorced">Divorced</option>
-                <option value="widowed">Widowed</option>
+                <option value="single">अविवाहित</option>
+                <option value="married">विवाहित</option>
+                <option value="divorced">तलाकशुदा</option>
+                <option value="widowed">विधवा/विधुर</option>
               </select>
             </div>
 
             {formData.maritalStatus === "married" && (
               <div>
-                <label>Marriage Date</label>
+                <label className="block text-amber-800 text-sm font-medium mb-1">विवाह तिथि</label>
                 <input
                   type="date"
                   name="marriageDate"
                   value={formData.marriageDate}
                   onChange={handleChange}
-                  className="input"
+                  className="w-full px-3 py-2 border border-amber-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white text-amber-900"
                 />
               </div>
             )}
 
             <div>
-              <label>Dharam</label>
-              <input type="text" name="dharam" value={formData.dharam} onChange={handleChange} className="input" />
+              <label className="block text-amber-800 text-sm font-medium mb-1">धर्म</label>
+              <input
+                type="text"
+                name="dharam"
+                value={formData.dharam}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-amber-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white placeholder-amber-400 text-amber-900"
+              />
             </div>
             <div>
-              <label>Jaati</label>
-              <input type="text" name="jaati" value={formData.jaati} onChange={handleChange} className="input" />
+              <label className="block text-amber-800 text-sm font-medium mb-1">जाति</label>
+              <input
+                type="text"
+                name="jaati"
+                value={formData.jaati}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-amber-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white placeholder-amber-400 text-amber-900"
+              />
             </div>
           </div>
 
           {/* Vehicles */}
-          <div>
-            <label>
-              <input type="checkbox" name="hasVehicle" checked={formData.hasVehicle} onChange={handleChange} /> Has Vehicle
+          <div className="pt-2">
+            <label className="inline-flex items-center text-amber-800">
+              <input
+                type="checkbox"
+                name="hasVehicle"
+                checked={formData.hasVehicle}
+                onChange={handleChange}
+                className="h-4 w-4 text-amber-600 rounded focus:ring-amber-500"
+              />
+              <span className="ml-2 font-medium">क्या आपके पास वाहन है?</span>
             </label>
           </div>
+
           {formData.hasVehicle &&
             formData.vehicles.map((v, i) => (
-              <div key={i} className="grid grid-cols-2 gap-3">
-                <input type="text" name="type" placeholder="Type" value={v.type} onChange={(e) => handleChange(e, i, "vehicles")} className="input" />
-                <input type="text" name="numberPlate" placeholder="Number Plate" value={v.numberPlate} onChange={(e) => handleChange(e, i, "vehicles")} className="input" />
-                <input type="date" name="purchaseDate" placeholder="Purchase Date" value={v.purchaseDate} onChange={(e) => handleChange(e, i, "vehicles")} className="input" />
-                <input type="date" name="insuranceExpiry" placeholder="Insurance Expiry" value={v.insuranceExpiry} onChange={(e) => handleChange(e, i, "vehicles")} className="input" />
+              <div key={i} className="grid grid-cols-1 md:grid-cols-2 gap-4 p-3 bg-amber-100 rounded-lg border border-amber-300">
+                <input
+                  type="text"
+                  name="type"
+                  placeholder="वाहन प्रकार (जैसे: ट्रैक्टर, बाइक)"
+                  value={v.type}
+                  onChange={(e) => handleChange(e, i, "vehicles")}
+                  className="w-full px-3 py-2 border border-amber-400 rounded focus:outline-none focus:ring-1 focus:ring-amber-500 bg-amber-50 text-amber-900 placeholder-amber-500"
+                />
+                <input
+                  type="text"
+                  name="numberPlate"
+                  placeholder="नंबर प्लेट"
+                  value={v.numberPlate}
+                  onChange={(e) => handleChange(e, i, "vehicles")}
+                  className="w-full px-3 py-2 border border-amber-400 rounded focus:outline-none focus:ring-1 focus:ring-amber-500 bg-amber-50 text-amber-900 placeholder-amber-500"
+                />
+                <input
+                  type="date"
+                  name="purchaseDate"
+                  value={v.purchaseDate}
+                  onChange={(e) => handleChange(e, i, "vehicles")}
+                  className="w-full px-3 py-2 border border-amber-400 rounded focus:outline-none focus:ring-1 focus:ring-amber-500 bg-amber-50 text-amber-900"
+                />
+                <input
+                  type="date"
+                  name="insuranceExpiry"
+                  value={v.insuranceExpiry}
+                  onChange={(e) => handleChange(e, i, "vehicles")}
+                  className="w-full px-3 py-2 border border-amber-400 rounded focus:outline-none focus:ring-1 focus:ring-amber-500 bg-amber-50 text-amber-900"
+                />
               </div>
             ))}
+
           {formData.hasVehicle && (
-            <button type="button" onClick={addVehicle} className="bg-green-500 text-white px-3 py-1 rounded mt-2">
-              + Add Vehicle
+            <button
+              type="button"
+              onClick={addVehicle}
+              className="mt-2 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-sm font-medium transition shadow-sm"
+            >
+              + वाहन जोड़ें
             </button>
           )}
 
           {/* Head of Family & Auth */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label>Head of Family Name</label>
-              <input type="text" name="headOfFamilyName" value={formData.headOfFamilyName} onChange={handleChange} className="input" />
+              <label className="block text-amber-800 text-sm font-medium mb-1">परिवार के मुखिया का नाम</label>
+              <input
+                type="text"
+                name="headOfFamilyName"
+                value={formData.headOfFamilyName}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-amber-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white text-amber-900"
+              />
             </div>
             <div>
-              <label>Email</label>
-              <input type="email" name="email" value={formData.email} onChange={handleChange} className="input" required />
+              <label className="block text-amber-800 text-sm font-medium mb-1">ईमेल</label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                className="w-full px-3 py-2 border border-amber-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white text-amber-900"
+              />
             </div>
             <div>
-              <label>Password</label>
-              <input type="password" name="password" value={formData.password} onChange={handleChange} className="input" required />
+              <label className="block text-amber-800 text-sm font-medium mb-1">पासवर्ड</label>
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+                className="w-full px-3 py-2 border border-amber-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white text-amber-900"
+              />
             </div>
           </div>
 
           <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.96 }}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
             type="submit"
-            className="w-full bg-indigo-600 text-white py-2 rounded-lg mt-4 font-semibold hover:bg-indigo-700 transition duration-200"
+            className="w-full bg-amber-700 hover:bg-amber-800 text-white font-bold py-3 rounded-lg mt-4 transition duration-200 shadow-md"
           >
-            Register User
+            पंजीकरण करें
           </motion.button>
         </form>
       </motion.div>
     </div>
+    <Footer/>
+    </>
   );
 }
 
-export default UserRegister;
+export default UserRegister;  
