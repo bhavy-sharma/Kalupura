@@ -180,42 +180,66 @@ export const addMembersToFamily = async (req, res) => {
 //update user isEnabled by admin
 export const updateUserStatus = async (req, res) => {
   try {
-    const {id} = req.params;
-    const { isEnable } = req.body;
-    if (!id || isEnable === undefined) {
-      return res.status(400).json({ message: "ID and isEnable are required" });
-    }
-    const updatedUser = await User.findByIdAndUpdate(id, { isEnabled: isEnable }, { new: true });
+    const { id } = req.params;
+    const { isEnabled } = req.body; // Expecting { isEnabled: true }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      { isEnabled: isEnabled }, // or just { isEnabled }
+      { new: true, runValidators: true }
+    );
+
     if (!updatedUser) {
       return res.status(404).json({ message: "User not found" });
-    } 
-    return res.status(200).json({ msg: "User status updated successfully", updatedUser });
+    }
+
+    res.status(200).json({
+      message: "User status updated",
+      user: updatedUser,
+    });
   } catch (error) {
-    return res.status(500).json({ message: "Internal Server Error" });
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
   }
-}
+};
 
 //login user
 export const loginUser = async (req, res) => {
   try {
-    
     const { email, password } = req.body;
+
     if (!email || !password) {
       return res.status(400).json({ message: "Email and Password are required" });
     }
-    const user = await User.findOne({ email, password });
+
+    // 🔍 Find user by email only
+    const user = await User.findOne({ email });
     if (!user) {
       return res.status(401).json({ message: "Invalid Email or Password" });
     }
-    const secretKey=process.env.JWT_SECRET;
+
+
+    const secretKey = process.env.JWT_SECRET;
     if (!secretKey) {
       return res.status(500).json({ message: "JWT Secret not configured" });
     }
-    const token= jwt.sign({ id: user._id, email: user.email, role: user.role }, secretKey, { expiresIn: "7d" });
-    return res.status(200).json({ msg: "Login Successful", user, token });
+
+    const token = jwt.sign(
+      { id: user._id, email: user.email, role: user.role },
+      secretKey,
+      { expiresIn: "7d" }
+    );
+
+    // 📤 Send user data (including isEnabled)
+    const { password: _, ...safeUser } = user._doc; // Exclude password
+
+    return res.status(200).json({
+      msg: "Login Successful",
+      user: safeUser, // ✅ Now includes isEnabled, vehicles, etc.
+      token,
+    });
   } catch (error) {
-
+    console.error("Login error:", error);
     return res.status(500).json({ message: "Internal Server Error" });
-  } 
-}
-
+  }
+};
