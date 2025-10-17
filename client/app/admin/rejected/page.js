@@ -1,11 +1,14 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
 function Rejected() {
   const [rejectedMembers, setRejectedMembers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
+
+  // Search filter state
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,6 +30,25 @@ function Rejected() {
 
     fetchData();
   }, []);
+
+  // Filter rejected members based on search term
+  const filteredMembers = useMemo(() => {
+    if (!searchTerm) return rejectedMembers;
+    
+    const term = searchTerm.toLowerCase();
+    return rejectedMembers.filter(member => 
+      (member.name?.toLowerCase().includes(term)) ||
+      (member.fatherName?.toLowerCase().includes(term)) ||
+      (member.headOfFamilyName?.toLowerCase().includes(term)) ||
+      (member.phoneNumber?.includes(term)) ||
+      (member.VillageName?.toLowerCase().includes(term)) ||
+      (member.occupation?.toLowerCase().includes(term)) ||
+      (member.aadharNumber?.includes(term)) ||
+      (member.panCardNumber?.includes(term)) ||
+      (member.email?.toLowerCase().includes(term)) ||
+      (member.dob?.includes(term))
+    );
+  }, [rejectedMembers, searchTerm]);
 
   const handleMoveToApproved = async (id) => {
     if (!confirm('क्या आप वाकई इस सदस्य को "अनुमोदित" में ले जाना चाहते हैं?')) return;
@@ -64,30 +86,46 @@ function Rejected() {
         </div>
       )}
 
+      {/* Search Filter */}
+      <div className="mb-6">
+        <input
+          type="text"
+          placeholder="खोजें: नाम, मोबाइल, आधार, पैन कार्ड, ईमेल, आदि..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        />
+      </div>
+
       {loading ? (
         <div className="text-center py-10">
           <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-blue-600 border-t-transparent"></div>
           <p className="mt-3 text-gray-600">अस्वीकृत सदस्य लोड हो रहे हैं...</p>
         </div>
-      ) : rejectedMembers.length === 0 ? (
+      ) : filteredMembers.length === 0 ? (
         <div className="text-center py-10 bg-white rounded-lg shadow text-gray-500">
           कोई अस्वीकृत सदस्य नहीं है।
         </div>
       ) : (
         <div className="space-y-5">
-          {rejectedMembers.map((member) => (
+          {filteredMembers.map((member) => (
             <div key={member._id} className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 hover:shadow-md transition-shadow">
               <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
                 {/* Left: Member Info */}
                 <div className="flex-1">
-                  <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-700">
-                     <div><span className="font-medium">नाम:</span> {member.name || '—'}</div>
-                    <div><span className="font-medium">प्रमुख:</span> {member.headOfFamilyName || '—'}</div>
-                    <div><span className="font-medium">जन्म तिथि:</span> {member.dob || '—'} </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 text-sm text-gray-700">
+                    <div><span className="font-medium">नाम:</span> {member.name || '—'}</div>
+                    <div><span className="font-medium">पिता:</span> {member.fatherName || '—'}</div>
+                    <div><span className="font-medium">पति/परिवार प्रमुख:</span> {member.headOfFamilyName || '—'}</div>
+                    <div><span className="font-medium">जन्म तिथि:</span> {member.dob || '—'}</div>
                     <div><span className="font-medium">मोबाइल:</span> {member.phoneNumber || '—'}</div>
                     <div><span className="font-medium">गाँव:</span> {member.VillageName || 'kalupra'}</div>
                     <div><span className="font-medium">पेशा:</span> {member.occupation || '—'}</div>
-                    <div><span className="font-medium">आधार:</span> {member.aadharNumber || '—'}</div>
+                    <div><span className="font-medium">आधार कार्ड:</span> {member.aadharNumber || '—'}</div>
+                    <div><span className="font-medium">पैन कार्ड:</span> {member.panCardNumber || '—'}</div>
+                    <div><span className="font-medium">ईमेल:</span> {member.email || '—'}</div>
+                    <div><span className="font-medium">योग्यता:</span> {member.qualification || '—'}</div>
+                    <div><span className="font-medium">धर्म:</span> {member.dharam || '—'}</div>
                   </div>
                 </div>
 
