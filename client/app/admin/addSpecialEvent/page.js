@@ -22,8 +22,8 @@ export default function AddSpecialEvent() {
         const res = await fetch("http://localhost:5000/api/v1/kalupra/getevent");
         if (res.ok) {
           const data = await res.json();
-          console.log("event:",data)
-          setEvents(data);
+         
+          setEvents(data.events || []);
         }
       } catch (err) {
         console.error("Failed to fetch events:", err);
@@ -66,7 +66,7 @@ export default function AddSpecialEvent() {
         // Refresh list
         const updatedRes = await fetch("http://localhost:5000/api/v1/kalupra/getevent");
         const updatedData = await updatedRes.json();
-        setEvents(updatedData);
+        setEvents(updatedData.events || []);
       } else {
         setMessage(data.message || "आयोजन जोड़ने में त्रुटि");
       }
@@ -106,6 +106,7 @@ export default function AddSpecialEvent() {
     const options = { day: 'numeric', month: 'long', year: 'numeric' };
     return date.toLocaleDateString('hi-IN', options);
   };
+  console.log(events)
 
   return (
     <div className="min-h-screen bg-amber-50 py-8 px-4">
