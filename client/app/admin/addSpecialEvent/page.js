@@ -19,7 +19,7 @@ export default function AddSpecialEvent() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/v1/kalupra/getallevents");
+        const res = await fetch("http://localhost:5000/api/v1/kalupra/getevent");
         if (res.ok) {
           const data = await res.json();
           setEvents(data);
@@ -63,7 +63,7 @@ export default function AddSpecialEvent() {
           location: "",
         });
         // Refresh list
-        const updatedRes = await fetch("http://localhost:5000/api/v1/kalupra/getallevents");
+        const updatedRes = await fetch("http://localhost:5000/api/v1/kalupra/getevent");
         const updatedData = await updatedRes.json();
         setEvents(updatedData);
       } else {

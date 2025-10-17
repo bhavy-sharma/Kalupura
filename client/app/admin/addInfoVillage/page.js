@@ -16,7 +16,7 @@ export default function AddVillage() {
   useEffect(() => {
     const fetchVillages = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/v1/kalupra/getallvillages");
+        const res = await fetch("http://localhost:5000/api/v1/kalupra/getinfovillage");
         if (res.ok) {
           const data = await res.json();
           setVillages(data);
@@ -53,7 +53,7 @@ export default function AddVillage() {
         setMessage("गाँव की जानकारी सफलतापूर्वक जोड़ी गई! 🌾");
         setFormData({ imageUrl: "", title: "", description: "" });
         // Refresh list
-        const updatedRes = await fetch("http://localhost:5000/api/v1/kalupra/getallvillages");
+        const updatedRes = await fetch("http://localhost:5000/api/v1/kalupra/getinfovillage");
         const updatedData = await updatedRes.json();
         setVillages(updatedData);
       } else {
@@ -71,7 +71,7 @@ export default function AddVillage() {
     if (!confirm("क्या आप वाकई इस गाँव की जानकारी हटाना चाहते हैं?")) return;
 
     try {
-      const res = await fetch(`http://localhost:5000/api/v1/kalupra/deletevillage/${id}`, {
+      const res = await fetch(`http://localhost:5000/api/v1/kalupra/deleteinfovillage/${id}`, {
         method: "DELETE",
       });
 

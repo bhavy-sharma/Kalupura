@@ -1,5 +1,6 @@
 // routes/auth.js (or wherever your login route is)
 import express from "express";
+import User from "../models/user.model";
 const router = express.Router();
 
 
