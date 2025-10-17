@@ -96,6 +96,14 @@ const AdminDashboard = () => {
       icon: '➕',
       path: '/admin/addInfoVillage',
       color: ' #10B981' 
+    },
+    {
+      id: 'Add Admin',
+      title: 'Add Admin',
+      description: 'Add New Admin',
+      icon: '➕',
+      path: '/registration/admin',
+      color: ' #10B981' 
     }
   ];
 
