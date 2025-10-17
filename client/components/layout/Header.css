@@ -272,3 +272,184 @@
 
   /* Optional: Show profile in mobile menu if needed (advanced) */
 }
+
+/* Profile Dropdown (Desktop) */
+.profile-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+  padding: 16px;
+  width: 240px;
+  z-index: 50;
+  margin-top: 8px;
+}
+
+.profile-user-info {
+  padding-bottom: 12px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 8px;
+}
+
+.profile-name {
+  font-weight: 600;
+  color: #1e293b;
+  display: block;
+}
+
+.profile-role-badge {
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 20px;
+  background: #f1f5f9;
+  color: #475569;
+  margin-top: 4px;
+  display: inline-block;
+}
+
+.role-admin { background: #dcfce7; color: #166534; }
+.role-headOFFamily { background: #dbeafe; color: #1d4ed8; }
+.role-member { background: #fef3c7; color: #92400e; }
+
+.profile-menu-link,
+.logout-btn,
+.mobile-menu-link,
+.mobile-logout-btn {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-top: 6px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.profile-menu-link:hover,
+.mobile-menu-link:hover {
+  background: #f8fafc;
+  color: #1e40af;
+}
+
+.logout-btn,
+.mobile-logout-btn {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: none;
+  cursor: pointer;
+}
+
+.logout-btn:hover,
+.mobile-logout-btn:hover {
+  background: #fecaca;
+}
+
+/* Mobile Menu */
+.mobile-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  z-index: 100;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.mobile-menu-content {
+  background: white;
+  width: 80%;
+  max-width: 320px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.mobile-menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid #eee;
+}
+
+.close-mobile-menu {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #64748b;
+}
+
+.mobile-nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.mobile-nav-list li {
+  padding: 0 16px;
+}
+
+.mobile-nav-list a,
+.mobile-nav-list button {
+  display: block;
+  padding: 14px 0;
+  text-decoration: none;
+  color: #1e293b;
+  font-weight: 500;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.mobile-profile-section {
+  padding: 16px !important;
+  background: #f8fafc;
+  margin-top: 12px;
+  border-radius: 12px;
+}
+
+.mobile-auth-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.mobile-auth-buttons .btn {
+  flex: 1;
+  text-align: center;
+}
+
+/* Responsive Utilities */
+.desktop-only {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none !important;
+  }
+
+  .mobile-menu-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 30px;
+    height: 30px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 60;
+  }
+
+  .mobile-menu-btn span {
+    width: 100%;
+    height: 2px;
+    background: #1e293b;
+    border-radius: 2px;
+  }
+}
