@@ -10,16 +10,17 @@ const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
 
-  // Check login status on mount and when localStorage changes
   useEffect(() => {
     const checkAuth = () => {
       const token = localStorage.getItem('token');
       const userData = localStorage.getItem('user');
       if (token && userData) {
-        setIsLoggedIn(true);
         try {
-          setUser(JSON.parse(userData));
+          const parsedUser = JSON.parse(userData);
+          setIsLoggedIn(true);
+          setUser(parsedUser);
         } catch (e) {
+          setIsLoggedIn(false);
           setUser(null);
         }
       } else {
@@ -29,8 +30,6 @@ const Header = () => {
     };
 
     checkAuth();
-
-    // Optional: Listen for storage changes (e.g., login/logout in another tab)
     window.addEventListener('storage', checkAuth);
     return () => window.removeEventListener('storage', checkAuth);
   }, []);
@@ -41,8 +40,11 @@ const Header = () => {
     setIsLoggedIn(false);
     setUser(null);
     setIsProfileOpen(false);
-    window.location.href = '/'; // Full reload to reset app state
+    window.location.href = '/';
   };
+
+  // ✅ Condition: Show "Chat" only if user is logged in AND isEnabled is true
+  const shouldShowChat = isLoggedIn && user?.isEnabled === true;
 
   return (
     <header className="website-header">
@@ -59,12 +61,15 @@ const Header = () => {
           <ul>
             <li><Link href="/">Home</Link></li>
             <li><Link href="/about">About</Link></li>
-            <li><Link href="/chat">Chat</Link></li>
+            {/* ✅ Show Chat only if enabled */}
+            {shouldShowChat && (
+              <li><Link href="/chat">Chat</Link></li>
+            )}
             <li><Link href="/contact">Contact</Link></li>
           </ul>
         </nav>
 
-        {/* Auth Section: Login/Signup OR Profile */}
+        {/* Auth Section */}
         <div className="auth-section">
           {isLoggedIn ? (
             <div className="profile-dropdown">
@@ -111,7 +116,6 @@ const Header = () => {
         </button>
       </div>
 
-      {/* Close profile dropdown if clicked outside */}
       {isProfileOpen && (
         <div
           className="dropdown-backdrop"
