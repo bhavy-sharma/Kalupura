@@ -17,6 +17,7 @@ function UserRegister() {
     grandmotherName: "",
     dob: "",
     dobTime: "",
+    age: "", // 👈 Added age field
     gender: "",
     phoneNumber: "",
 
@@ -133,6 +134,17 @@ function UserRegister() {
               name="dobTime"
               value={formData.dobTime}
               onChange={handleChange}
+              className="w-full px-4 py-2 border border-amber-600 rounded focus:outline-none focus:ring-2 focus:ring-amber-500"
+            />
+            {/* 👇 Age Field Added Here */}
+            <input
+              type="number"
+              name="age"
+              placeholder="आयु (वर्ष में)"
+              value={formData.age}
+              onChange={handleChange}
+              min="0"
+              max="120"
               className="w-full px-4 py-2 border border-amber-600 rounded focus:outline-none focus:ring-2 focus:ring-amber-500"
             />
           </div>
