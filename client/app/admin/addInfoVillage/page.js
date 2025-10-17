@@ -21,7 +21,7 @@ export default function AddVillage() {
         if (res.ok) {
           const data = await res.json();
           console.log("info:",data)
-          setVillages(data);
+          setVillages(data.infoVillage || []);
         }
       } catch (err) {
         console.error("Failed to fetch villages:", err);
@@ -57,7 +57,7 @@ export default function AddVillage() {
         // Refresh list
         const updatedRes = await fetch("http://localhost:5000/api/v1/kalupra/getinfovillage");
         const updatedData = await updatedRes.json();
-        setVillages(updatedData);
+        setVillages(updatedData.infoVillage || []);
       } else {
         setMessage(data.message || "गाँव जोड़ने में त्रुटि");
       }
