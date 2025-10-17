@@ -71,12 +71,6 @@ const Carousel = () => {
                 <div className="slide-content">
                   <h2 className="slide-title">{slide.title}</h2>
                   <p className="slide-description">{slide.description}</p>
-                  <button 
-                    className="explore-btn"
-                    onClick={() => console.log('Explore button clicked!')}
-                  >
-                    गाँव घूमें
-                  </button>
                 </div>
               </div>
             </div>
