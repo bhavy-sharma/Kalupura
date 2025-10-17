@@ -69,6 +69,24 @@ export const AddSpecialEvent = async (req, res) => {
   }
 }
 
+// delete Special Event by ID
+export const DeleteSpecialEvent = async (req, res) => {
+  try {
+    const {id}= req.params;
+    if(!id){
+      return res.status(400).json({message:"ID is required"});
+     }
+      const deletedEvent= await SpecialEvent.findByIdAndDelete(id);
+      if(!deletedEvent){
+      return res.status(404).json({message:"Event not found"});
+      }
+      return res.status(200).json({message:"Event deleted successfully"});
+  } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error" });
+    
+  }
+}
+
 // Get All Special Events
 export const GetSpecialEvent = async (req, res) => {
   try {
@@ -98,6 +116,24 @@ export const AddInfoVillage = async (req, res) => {
   }
 };
 
+// delete InfoVillage by ID
+export  const DeleteInfoVillage = async (req, res) => {
+  try {
+     const {id}= req.params;
+     if(!id){
+      return res.status(400).json({message:"ID is required"});
+     }
+     const deletedInfoVillage= await InfoVillage.findByIdAndDelete(id);
+     if(!deletedInfoVillage){
+      return res.status(404).json({message:"InfoVillage not found"});
+     }
+     return res.status(200).json({message:"InfoVillage deleted successfully"});
+  } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error" });
+    
+  }
+}
+
 
 // Get All InfoVillage
 export const GetInfoVillage = async (req, res) => {
@@ -112,7 +148,7 @@ export const GetInfoVillage = async (req, res) => {
 //create user
 export const createUser = async (req, res) => {
   try {
-    const { name, fatherName, motherName, grandfatherName, grandmotherName, dob, dobTime, qualification,gender,phoneNumber, occupation, maritalStatus, marriageDate, dharam, jaati, hasVehicle, vehicleCount, vehicles,aadharNumber,panCardNumber, headOfFamilyName, email, password, role, memberOfFamily } = req.body;
+    const { name, fatherName, motherName, grandfatherName, grandmotherName, dob, dobTime, qualification,gender,phoneNumber,age, occupation, maritalStatus, marriageDate, dharam, jaati, hasVehicle, vehicleCount, vehicles,aadharNumber,panCardNumber, headOfFamilyName, email, password, role, memberOfFamily } = req.body;
 
     const userExists = await User.findOne({ email });
     if (userExists) {
@@ -121,7 +157,7 @@ export const createUser = async (req, res) => {
     if (!name || !fatherName || !motherName || !email || !password) {
       return res.status(400).json({ message: "Name, Father Name, Mother Name, Email, and Password are required" });
     }
-    const newUser = await User.create({ name, fatherName, motherName, grandfatherName, grandmotherName, dob, dobTime, qualification,gender,phoneNumber, occupation, maritalStatus, marriageDate, dharam, jaati, hasVehicle, vehicleCount, vehicles,aadharNumber,panCardNumber, headOfFamilyName, email, password, role, memberOfFamily });
+    const newUser = await User.create({ name, fatherName, motherName, grandfatherName, grandmotherName, dob, dobTime, qualification,gender,phoneNumber,age, occupation, maritalStatus, marriageDate, dharam, jaati, hasVehicle, vehicleCount, vehicles,aadharNumber,panCardNumber, headOfFamilyName, email, password, role, memberOfFamily });
     return res.status(201).json({ msg: "User Created Successfully", newUser });
 
   } catch (error) {
@@ -181,11 +217,11 @@ export const addMembersToFamily = async (req, res) => {
 export const updateUserStatus = async (req, res) => {
   try {
     const { id } = req.params;
-    const { isEnabled } = req.body; // Expecting { isEnabled: true }
+    const { isEnable } = req.body; // Expecting { isEnabled: true }
 
     const updatedUser = await User.findByIdAndUpdate(
       id,
-      { isEnabled: isEnabled }, // or just { isEnabled }
+      { isEnabled: isEnable }, // or just { isEnabled }
       { new: true, runValidators: true }
     );
 

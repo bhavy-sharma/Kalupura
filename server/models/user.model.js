@@ -21,6 +21,7 @@ const userSchema = new mongoose.Schema({
     qualification: { type: String },
     gender: { type: String, enum: ["male", "female", "other"], default: "male" },
     phoneNumber: { type: String },
+    age: { type: Number ,required:true},
     occupation: { type: String },
     maritalStatus: {
         type: String,
