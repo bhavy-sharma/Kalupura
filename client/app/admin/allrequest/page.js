@@ -1,11 +1,14 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
 function AllRequest() {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
+
+  // Search filter state
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,8 +31,28 @@ function AllRequest() {
     fetchData();
   }, []);
 
+  // Filter requests based on search term
+  const filteredRequests = useMemo(() => {
+    if (!searchTerm) return requests;
+    
+    const term = searchTerm.toLowerCase();
+    return requests.filter(req => 
+      (req.name?.toLowerCase().includes(term)) ||
+      (req.fatherName?.toLowerCase().includes(term)) ||
+      (req.headOfFamilyName?.toLowerCase().includes(term)) ||
+      (req.phoneNumber?.includes(term)) ||
+      (req.VillageName?.toLowerCase().includes(term)) ||
+      (req.occupation?.toLowerCase().includes(term)) ||
+      (req.aadharNumber?.includes(term)) ||
+      (req.panCardNumber?.includes(term)) ||
+      (req.email?.toLowerCase().includes(term)) ||
+      (req.dob?.includes(term))
+    );
+  }, [requests, searchTerm]);
+
   const handleApprove = async (id) => {
-    try {const res = await fetch(`http://localhost:5000/api/v1/kalupra/updateisEnabled/${id}`, {
+    try {
+      const res = await fetch(`http://localhost:5000/api/v1/kalupra/updateisEnabled/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ isEnable: true })
@@ -83,30 +106,46 @@ function AllRequest() {
         </div>
       )}
 
+      {/* Search Filter */}
+      <div className="mb-6">
+        <input
+          type="text"
+          placeholder="खोजें: नाम, मोबाइल, आधार, पैन कार्ड, ईमेल, आदि..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        />
+      </div>
+
       {loading ? (
         <div className="text-center py-10">
           <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-blue-600 border-t-transparent"></div>
           <p className="mt-3 text-gray-600">आवेदन लोड हो रहे हैं...</p>
         </div>
-      ) : requests.length === 0 ? (
+      ) : filteredRequests.length === 0 ? (
         <div className="text-center py-10 bg-white rounded-lg shadow text-gray-500">
           कोई प्रतीक्षाधीन आवेदन नहीं है।
         </div>
       ) : (
         <div className="space-y-5">
-          {requests.map((req) => (
+          {filteredRequests.map((req) => (
             <div key={req._id} className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 hover:shadow-md transition-shadow">
               <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
                 {/* Left: Info */}
                 <div className="flex-1">
-                  <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-700">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 text-sm text-gray-700">
                     <div><span className="font-medium">नाम:</span> {req.name || '—'}</div>
-                    <div><span className="font-medium">पिता/पति:</span> {req.headOfFamilyName || '—'}</div>
-                    <div><span className="font-medium">जन्म तिथि:</span> {req.dob || '—'} </div>
+                    <div><span className="font-medium">पिता:</span> {req.fatherName || '—'}</div>
+                    <div><span className="font-medium">पति/परिवार प्रमुख:</span> {req.headOfFamilyName || '—'}</div>
+                    <div><span className="font-medium">जन्म तिथि:</span> {req.dob || '—'}</div>
                     <div><span className="font-medium">मोबाइल:</span> {req.phoneNumber || '—'}</div>
                     <div><span className="font-medium">गाँव:</span> {req.VillageName || 'kalupra'}</div>
                     <div><span className="font-medium">पेशा:</span> {req.occupation || '—'}</div>
-                    <div><span className="font-medium">आधार:</span> {req.aadharNumber || '—'}</div>
+                    <div><span className="font-medium">आधार कार्ड:</span> {req.aadharNumber || '—'}</div>
+                    <div><span className="font-medium">पैन कार्ड:</span> {req.panCardNumber || '—'}</div>
+                    <div><span className="font-medium">ईमेल:</span> {req.email || '—'}</div>
+                    <div><span className="font-medium">योग्यता:</span> {req.qualification || '—'}</div>
+                    <div><span className="font-medium">धर्म:</span> {req.dharam || '—'}</div>
                   </div>
                 </div>
 
