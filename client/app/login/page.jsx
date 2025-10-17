@@ -10,43 +10,46 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    setIsLoading(true);
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError('');
+  setIsLoading(true);
 
-    try {
-      const res = await fetch('http://localhost:5000/api/v1/kalupra/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
+  try {
+    const res = await fetch('http://localhost:5000/api/v1/kalupra/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
 
-      const data = await res.json();
+    const data = await res.json();
 
-      if (res.ok && data.token && data.user) {
-        // Save JWT token and user securely in localStorage
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.user));
+    if (res.ok && data.token && data.user) {
+      // Save JWT token and user securely in localStorage
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
 
-        // Redirect based on role
-        setTimeout(() => {
-          if (data.user.role === 'admin') {
-            router.push('/admin');
-          } else {
-            router.push('/');
-          }
-        }, 800);
-      } else {
-        setError(data.message || 'लॉगिन विफल। कृपया पुनः प्रयास करें।');
-      }
-    } catch (err) {
-      console.error('Login error:', err);
-      setError('कुछ गड़बड़ हुई। कृपया अपना कनेक्शन जाँचें।');
-    } finally {
-      setIsLoading(false);
+      // ✅ Role-based redirect as per your requirement
+      setTimeout(() => {
+        if (data.user.role === 'admin') {
+          router.push('/choose'); 
+        } else if (data.user.role === 'headOfFamily' || data.user.role === 'member') {
+          router.push('/'); // home page
+        } else {
+          // Fallback: agar koi aur role ho (e.g., guest), to home pe bhejo
+          router.push('/');
+        }
+      }, 800);
+    } else {
+      setError(data.message || 'लॉगिन विफल। कृपया पुनः प्रयास करें।');
     }
-  };
+  } catch (err) {
+    console.error('Login error:', err);
+    setError('कुछ गड़बड़ हुई। कृपया अपना कनेक्शन जाँचें।');
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-amber-100 to-green-100 p-4">
