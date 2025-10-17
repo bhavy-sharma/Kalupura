@@ -2,10 +2,12 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
-import { a } from "framer-motion/dist/types.d-BJcRxCew";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 
 function UserRegister() {
-  const userData =localStorage.getItem("user");
+  const userData = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null;
+  
   const [formData, setFormData] = useState({
     // Personal Info
     name: "",
@@ -29,7 +31,6 @@ function UserRegister() {
     jaati: "",
     aadharNumber: "",
     panCardNumber: "",
-    
 
     // Head of Family & Auth
     headOfFamilyName: "",
@@ -39,20 +40,21 @@ function UserRegister() {
     memberOfFamily: ["no"],
   });
 
-  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // Submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await axios.post("http://localhost:5000/api/v1/kalupra/createuser", formData);
-      const updateData= await axios.patch("http://localhost:5000/api/v1/kalupra/addmembertofamily", { email: userData.email, newMembers: [formData.name] });  
-      // member name or headof email
-      console.log(res.data);
+      if (userData?.email) {
+        await axios.patch("http://localhost:5000/api/v1/kalupra/addmembertofamily", { 
+          email: userData.email, 
+          newMembers: [formData.name] 
+        });
+      }
       alert("User Registered Successfully");
     } catch (error) {
       console.error(error);
@@ -61,190 +63,234 @@ function UserRegister() {
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gradient-to-br from-indigo-100 via-white to-indigo-200 p-6">
+    <>
+    <Header />
+    <div className="min-h-screen bg-amber-50 p-4 flex justify-center items-start pt-8">
       <motion.div
-        initial={{ opacity: 0, y: -20 }}
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="bg-white shadow-2xl rounded-2xl p-8 w-full max-w-2xl"
+        transition={{ duration: 0.6 }}
+        className="w-full max-w-3xl bg-white border-2 border-amber-800 rounded-xl shadow-md p-6"
       >
-        <h2 className="text-2xl font-semibold text-center mb-6 text-indigo-700">
-          🧾 User Registration
-        </h2>
+        <div className="text-center mb-6">
+          <h2 className="text-2xl font-bold text-amber-900">ग्रामीण पंजीकरण फॉर्म</h2>
+          <p className="text-amber-700 mt-1">कृपया अपना विवरण भरें</p>
+        </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-5">
           {/* Personal Info */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input
               type="text"
               name="name"
-              placeholder="Name"
+              placeholder="नाम"
               value={formData.name}
               onChange={handleChange}
-              className="input"
+              className="w-full px-4 py-2 border border-amber-600 rounded focus:outline-none focus:ring-2 focus:ring-amber-500"
               required
             />
             <input
               type="text"
               name="fatherName"
-              placeholder="Father Name"
+              placeholder="पिता का नाम"
               value={formData.fatherName}
               onChange={handleChange}
-              className="input"
+              className="w-full px-4 py-2 border border-amber-600 rounded focus:outline-none focus:ring-2 focus:ring-amber-500"
             />
             <input
               type="text"
               name="motherName"
-              placeholder="Mother Name"
+              placeholder="माता का नाम"
               value={formData.motherName}
               onChange={handleChange}
-              className="input"
+              className="w-full px-4 py-2 border border-amber-600 rounded focus:outline-none focus:ring-2 focus:ring-amber-500"
             />
             <input
               type="text"
               name="grandfatherName"
-              placeholder="Grandfather Name"
+              placeholder="दादा/नाना का नाम"
               value={formData.grandfatherName}
               onChange={handleChange}
-              className="input"
+              className="w-full px-4 py-2 border border-amber-600 rounded focus:outline-none focus:ring-2 focus:ring-amber-500"
             />
             <input
               type="text"
               name="grandmotherName"
-              placeholder="Grandmother Name"
+              placeholder="दादी/नानी का नाम"
               value={formData.grandmotherName}
               onChange={handleChange}
-              className="input"
+              className="w-full px-4 py-2 border border-amber-600 rounded focus:outline-none focus:ring-2 focus:ring-amber-500"
             />
             <input
               type="date"
               name="dob"
-              placeholder="Date of Birth"
               value={formData.dob}
               onChange={handleChange}
-              className="input"
+              className="w-full px-4 py-2 border border-amber-600 rounded focus:outline-none focus:ring-2 focus:ring-amber-500"
             />
             <input
               type="time"
               name="dobTime"
-              placeholder="DOB Time"
               value={formData.dobTime}
               onChange={handleChange}
-              className="input"
+              className="w-full px-4 py-2 border border-amber-600 rounded focus:outline-none focus:ring-2 focus:ring-amber-500"
             />
           </div>
 
           {/* Education & Work */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input
               type="text"
               name="qualification"
-              placeholder="Qualification"
+              placeholder="शैक्षणिक योग्यता"
               value={formData.qualification}
               onChange={handleChange}
-              className="input"
+              className="w-full px-4 py-2 border border-amber-600 rounded focus:outline-none focus:ring-2 focus:ring-amber-500"
             />
             <input
               type="text"
               name="occupation"
-              placeholder="Occupation"
+              placeholder="व्यवसाय"
               value={formData.occupation}
               onChange={handleChange}
-              className="input"
+              className="w-full px-4 py-2 border border-amber-600 rounded focus:outline-none focus:ring-2 focus:ring-amber-500"
             />
           </div>
 
           {/* Marital & Social */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label>Marital Status</label>
-  <select
-    name="maritalStatus"
-    value={formData.maritalStatus}
-    onChange={handleChange}
-    className="input"
-  >
-    <option value="single">Single</option>
-    <option value="married">Married</option>
-    <option value="divorced">Divorced</option>
-    <option value="widowed">Widowed</option>
-  </select>
-</div>
+              <label className="block text-amber-800 text-sm mb-1">वैवाहिक स्थिति</label>
+              <select
+                name="maritalStatus"
+                value={formData.maritalStatus}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-amber-600 rounded focus:outline-none focus:ring-2 focus:ring-amber-500"
+              >
+                <option value="single">अविवाहित</option>
+                <option value="married">विवाहित</option>
+                <option value="divorced">तलाकशुदा</option>
+                <option value="widowed">विधवा/विधुर</option>
+              </select>
+            </div>
 
-{formData.maritalStatus === "married" && (
-  <div>
-    <label>Marriage Date</label>
-    <input
-      type="date"
-      name="marriageDate"
-      value={formData.marriageDate}
-      onChange={handleChange}
-      className="input"
-    />
-  </div>
-)}
+            {formData.maritalStatus === "married" && (
+              <div>
+                <label className="block text-amber-800 text-sm mb-1">विवाह तिथि</label>
+                <input
+                  type="date"
+                  name="marriageDate"
+                  value={formData.marriageDate}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2 border border-amber-600 rounded focus:outline-none focus:ring-2 focus:ring-amber-500"
+                />
+              </div>
+            )}
 
-        <input
-              type="text"
-              name="dharam"
-              placeholder="Dharam"
-              value={formData.jaati}
-              onChange={handleChange}
-              className="input"
-            />
+            <div>
+              <label className="block text-amber-800 text-sm mb-1">धर्म</label>
+              <select
+                name="dharam"
+                value={formData.dharam}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-amber-600 rounded focus:outline-none focus:ring-2 focus:ring-amber-500"
+              >
+                <option value="">चुनें</option>
+                <option value="हिंदू">हिंदू</option>
+                <option value="मुस्लिम">मुस्लिम</option>
+                <option value="ईसाई">ईसाई</option>
+                <option value="सिख">सिख</option>
+                <option value="बौद्ध">बौद्ध</option>
+                <option value="जैन">जैन</option>
+                <option value="अन्य">अन्य</option>
+              </select>
+            </div>
 
+            <div>
+              <label className="block text-amber-800 text-sm mb-1">जाति</label>
+              <select
+                name="jaati"
+                value={formData.jaati}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-amber-600 rounded focus:outline-none focus:ring-2 focus:ring-amber-500"
+              >
+                <option value="">चुनें</option>
+                <option value="general">सामान्य</option>
+                <option value="obc">ओबीसी</option>
+                <option value="sc">अनुसूचित जाति (SC)</option>
+                <option value="st">अनुसूचित जनजाति (ST)</option>
+                <option value="other">अन्य</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Aadhar & PAN */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input
               type="text"
-              name="jaati"
-              placeholder="Jaati"
-              value={formData.jaati}
+              name="aadharNumber"
+              placeholder="आधार कार्ड संख्या (12 अंक)"
+              value={formData.aadharNumber}
               onChange={handleChange}
-              className="input"
+              className="w-full px-4 py-2 border border-amber-600 rounded focus:outline-none focus:ring-2 focus:ring-amber-500"
+              pattern="\d{12}"
+              title="कृपया 12 अंकों का आधार नंबर दर्ज करें"
             />
-            
+            <input
+              type="text"
+              name="panCardNumber"
+              placeholder="पैन कार्ड संख्या (10 अक्षर/अंक)"
+              value={formData.panCardNumber}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border border-amber-600 rounded focus:outline-none focus:ring-2 focus:ring-amber-500"
+              pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}"
+              title="उदाहरण: ABCDE1234F"
+            />
           </div>
 
           {/* Head of Family & Auth */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input
               type="text"
               name="headOfFamilyName"
-              placeholder="Head of Family Name"
+              placeholder="परिवार के मुखिया का नाम"
               value={formData.headOfFamilyName}
               onChange={handleChange}
-              className="input"
+              className="w-full px-4 py-2 border border-amber-600 rounded focus:outline-none focus:ring-2 focus:ring-amber-500"
             />
             <input
               type="email"
               name="email"
-              placeholder="Email"
+              placeholder="ईमेल"
               value={formData.email}
               onChange={handleChange}
-              className="input"
+              className="w-full px-4 py-2 border border-amber-600 rounded focus:outline-none focus:ring-2 focus:ring-amber-500"
               required
             />
             <input
               type="password"
               name="password"
-              placeholder="Password"
+              placeholder="पासवर्ड"
               value={formData.password}
               onChange={handleChange}
-              className="input"
+              className="w-full px-4 py-2 border border-amber-600 rounded focus:outline-none focus:ring-2 focus:ring-amber-500"
               required
             />
           </div>
 
           <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
             type="submit"
-            className="w-full bg-indigo-600 text-white py-2 rounded-lg mt-4 font-semibold hover:bg-indigo-700 transition duration-200"
+            className="w-full bg-amber-700 hover:bg-amber-800 text-white font-semibold py-3 rounded-lg mt-4 transition duration-200"
           >
-            Register User
+            पंजीकरण करें
           </motion.button>
         </form>
       </motion.div>
     </div>
+    <Footer />
+    </>
   );
 }
 
