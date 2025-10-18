@@ -87,7 +87,7 @@ const MediaGallery = () => {
       <div className="media-grid">
         {mediaItems.map((media, index) => (
           <div 
-            key={media.id}
+            key={media.id || index}
             className="media-card"
             onClick={() => openModal(media)}
             style={{ animationDelay: `${index * 0.1}s` }}
