@@ -197,13 +197,6 @@ const ContactPage = () => {
           </div>
         </div>
 
-        {/* Optional: Google Map Placeholder */}
-        <div className="mt-12 bg-gray-50 rounded-lg p-4 border border-gray-200">
-          <h3 className="text-lg font-semibold text-center text-gray-800 mb-3">हमारा स्थान</h3>
-          <div className="h-64 bg-white rounded-md flex items-center justify-center text-gray-500 border border-gray-300">
-            🗺️ Google Map (यहाँ कलुपुरा का गूगल मैप एम्बेड करें)
-          </div>
-        </div>
       </div>
 
       <Footer />
