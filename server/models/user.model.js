@@ -40,7 +40,7 @@ const userSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     role: { type: String, enum: ["admin", "headOFFamily", "member"], default: "member" },
-    memberOfFamily: [{ type: String, required: true, default: "no" }],
+   memberOfFamily: { type: [String], default: ["no"] },
     roomId: { type: String,default:"main"},
     isEnabled: { type: Boolean, default: null },
 }, { timestamps: true })

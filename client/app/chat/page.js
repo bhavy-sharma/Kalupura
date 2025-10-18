@@ -21,6 +21,19 @@ export default function Chat() {
     }
   }, []);
 
+  useEffect(()=>{
+    const fetchChatMessages = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/v1/kalupra/getchat");
+        const data = await response.json();
+        setChat(data.chats);
+
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  })
+
   useEffect(() => {
     if (!userData?.roomId || !userData?.name) return;
 
@@ -43,8 +56,23 @@ export default function Chat() {
     };
   }, [userData]);
 
-  const sendMessage = () => {
+  const sendMessage = async() => {
     if (!socket || !message.trim()) return;
+    await fetch("http://localhost:5000/api/v1/kalupra/addchat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        msg: message.trim(),
+        name: userData.name,
+        time: new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+        date: new Date().toLocaleDateString(),
+      }),
+    });     
 
     const msgData = {
       room: userData.roomId,
