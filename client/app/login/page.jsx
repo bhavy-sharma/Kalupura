@@ -113,15 +113,7 @@ const handleSubmit = async (e) => {
               />
             </div>
 
-            {/* Forgot Password Link */}
-            <div className="text-right mb-6">
-              <a
-                href="/forgot-password"
-                className="text-amber-600 hover:text-amber-800 text-sm font-medium hover:underline"
-              >
-                पासवर्ड भूल गए? 🤔
-              </a>
-            </div>
+
 
             {/* Submit Button */}
             <button
@@ -163,7 +155,7 @@ const handleSubmit = async (e) => {
                 href="/signup"
                 className="text-green-600 hover:text-green-800 font-semibold text-lg hover:underline"
               >
-                यहाँ पंजीकरण करें 🌟
+                Sign up करें 🌟
               </a>
             </p>
           </div>
