@@ -1,6 +1,12 @@
 'use client';
 
 import './Footer.css';
+import { 
+  FaFacebookF, 
+  FaYoutube, 
+  FaWhatsapp, 
+  FaInstagram 
+} from 'react-icons/fa';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -8,36 +14,14 @@ const Footer = () => {
   const quickLinks = [
     { name: 'Home', href: '/' },
     { name: 'About', href: '/about' },
-    { name: 'gallery', href: '/gallery' },
-    { name: 'News', href: '/news' },
     { name: 'Contact', href: '/contact' }
   ];
 
   const socialLinks = [
-    { 
-      name: 'Facebook', 
-      href: '#', 
-      icon: '📘',
-      class: 'facebook' 
-    },
-    { 
-      name: 'YouTube', 
-      href: '#', 
-      icon: '📺',
-      class: 'youtube' 
-    },
-    { 
-      name: 'WhatsApp', 
-      href: '#', 
-      icon: '💬',
-      class: 'whatsapp' 
-    },
-    { 
-      name: 'Instagram', 
-      href: '#', 
-      icon: '📷',
-      class: 'instagram' 
-    }
+    { name: 'Facebook',    href: 'https://facebook.com/yourpage',    icon: <FaFacebookF />, class: 'facebook' },
+    { name: 'YouTube',     href: 'https://youtube.com/yourchannel', icon: <FaYoutube />,   class: 'youtube' },
+    { name: 'WhatsApp',    href: 'https://wa.me/919876543210',      icon: <FaWhatsapp />,  class: 'whatsapp' },
+    { name: 'Instagram',   href: 'https://instagram.com/yourhandle',icon: <FaInstagram />,class: 'instagram' }
   ];
 
   const contactInfo = [
@@ -62,7 +46,7 @@ const Footer = () => {
             </p>
             <div className="footer-made-with">
               <span>Made with ❤️ by </span>
-              <span className="developer-name">Bhavy Sharma</span>
+              <span className="developer-name">Bhavy Sharma and Anant Pratap Singh</span>
             </div>
           </div>
 
@@ -70,8 +54,8 @@ const Footer = () => {
           <div className="footer-links">
             <h4 className="footer-heading">Quick Links</h4>
             <ul className="links-list">
-              {quickLinks.map((link, index) => (
-                <li key={index}>
+              {quickLinks.map((link) => (
+                <li key={link.href}>
                   <a href={link.href} className="footer-link">
                     {link.name}
                   </a>
@@ -97,30 +81,21 @@ const Footer = () => {
           <div className="footer-social">
             <h4 className="footer-heading">Follow us</h4>
             <div className="social-links">
-              {socialLinks.map((social, index) => (
+              {socialLinks.map((social) => (
                 <a
-                  key={index}
+                  key={social.name}
                   href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className={`social-link ${social.class}`}
-                  aria-label={social.name}
+                  aria-label={`Visit our ${social.name} page`}
                 >
-                  <span className="social-icon">{social.icon}</span>
+                  <span className="social-icon">
+                    {social.icon}
+                  </span>
                 </a>
               ))}
             </div>
-            
-            {/* Newsletter */}
-            {/* <div className="newsletter">
-              <p className="newsletter-text">नवीनतम अपडेट प्राप्त करें</p>
-              <div className="newsletter-input">
-                <input 
-                  type="email" 
-                  placeholder="आपका ईमेल" 
-                  className="email-input"
-                />
-                <button className="subscribe-btn">सब्सक्राइब</button>
-              </div>
-            </div> */}
           </div>
 
         </div>
@@ -131,11 +106,6 @@ const Footer = () => {
             <p className="copyright">
               © {currentYear} कलुपुरा गाँव. सभी अधिकार सुरक्षित.
             </p>
-            <div className="footer-bottom-links">
-              <a href="/privacy" className="bottom-link">गोपनीयता नीति</a>
-              <a href="/terms" className="bottom-link">सेवा की शर्तें</a>
-              <a href="/sitemap" className="bottom-link">साइटमैप</a>
-            </div>
           </div>
         </div>
 
