@@ -3,19 +3,23 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+
+
 export default function Chat() {
   const [message, setMessage] = useState("");
   const [chat, setChat] = useState([]);
   const [userData, setUserData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  
 
   // Mock user data since localStorage isn't available
   // In a real app, you'd get this from your authentication system
   useEffect(() => {
     // Simulate getting user data from auth context or props
     // For demo purposes, using mock data
+    const userDatas=localStorage.getItem("user");
     const mockUser = {
-      name: "Bhavy Sharma",
+      name: userDatas?JSON.parse(userDatas).name:"Guest User",
       roomId: "kalupura-room"
     };
     setUserData(mockUser);
