@@ -1,11 +1,13 @@
-/* Header Styles */
+/* Header.css — Optimized for Performance + Consistency */
+
+/* ===== Base Header ===== */
 .website-header {
   background-color: #f0f8f0;
   padding: 0.8rem 0;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 1100; /* Higher than overlays */
 }
 
 .header-container {
@@ -17,7 +19,7 @@
   padding: 0 2rem;
 }
 
-/* Logo Styles */
+/* ===== Logo ===== */
 .logo h1 {
   color: #2d5a2d;
   font-size: 2rem;
@@ -30,7 +32,7 @@
   text-decoration: none;
 }
 
-/* Navigation Menu */
+/* ===== Navigation (Desktop) ===== */
 .nav-menu ul {
   display: flex;
   list-style: none;
@@ -52,7 +54,7 @@
   color: #4CAF50;
 }
 
-/* Auth Buttons */
+/* ===== Auth Buttons (Desktop) ===== */
 .auth-buttons {
   display: flex;
   gap: 1rem;
@@ -91,91 +93,7 @@
   transform: translateY(-2px);
 }
 
-/* Mobile Menu Button (Hidden by default) */
-.mobile-menu-btn {
-  display: none;
-  flex-direction: column;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0.5rem;
-}
-
-.mobile-menu-btn span {
-  width: 25px;
-  height: 3px;
-  background-color: #2d5a2d;
-  margin: 2px 0;
-  transition: 0.3s;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .header-container {
-    padding: 0 1rem;
-  }
-
-  .mobile-menu-btn {
-    display: flex;
-  }
-
-  .nav-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background-color: #f0f8f0;
-    flex-direction: column;
-    padding: 1rem 0;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-    transform: translateY(-10px);
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-  }
-
-  .nav-menu-open {
-    transform: translateY(0);
-    opacity: 1;
-    visibility: visible;
-  }
-
-  .nav-menu ul {
-    flex-direction: column;
-    gap: 0;
-  }
-
-  .nav-menu li {
-    width: 100%;
-    text-align: center;
-  }
-
-  .nav-menu a {
-    display: block;
-    padding: 1rem 0;
-    border-bottom: 1px solid #e0e0e0;
-  }
-
-  .auth-buttons {
-    display: none;
-  }
-
-  .logo h1 {
-    font-size: 1.5rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .header-container {
-    padding: 0 0.5rem;
-  }
-
-  .logo h1 {
-    font-size: 1.3rem;
-  }
-}
-
-/* Profile Dropdown Styles */
+/* ===== Profile Dropdown (Desktop Only) ===== */
 .auth-section {
   position: relative;
   display: flex;
@@ -207,84 +125,12 @@
   top: 100%;
   right: 0;
   background: white;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  width: 200px;
-  padding: 12px;
-  z-index: 1001;
-  margin-top: 8px;
-}
-
-.profile-user-info {
-  text-align: center;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #eee;
-  margin-bottom: 8px;
-}
-
-.profile-name {
-  font-weight: 600;
-  color: #2d5a2d;
-  display: block;
-}
-
-.profile-role {
-  font-size: 0.85rem;
-  color: #666;
-}
-
-.logout-btn {
-  width: 100%;
-  padding: 8px 12px;
-  background-color: #f8d7da;
-  color: #721c24;
-  border: none;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-}
-
-.logout-btn:hover {
-  background-color: #f1b0b7;
-}
-
-/* Backdrop to close dropdown on outside click (mobile/desktop) */
-.dropdown-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 1000;
-}
-
-/* Responsive: Hide profile on mobile auth area */
-@media (max-width: 768px) {
-  .auth-section {
-    display: none;
-  }
-
-  /* Optional: Show profile in mobile menu if needed (advanced) */
-}
-
-/* Profile Dropdown (Desktop) */
-.profile-menu {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background: white;
   border: 1px solid #e2e8f0;
   border-radius: 12px;
-  box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
   padding: 16px;
   width: 240px;
-  z-index: 50;
+  z-index: 1101; /* Above header */
   margin-top: 8px;
 }
 
@@ -292,6 +138,7 @@
   padding-bottom: 12px;
   border-bottom: 1px solid #eee;
   margin-bottom: 8px;
+  text-align: center;
 }
 
 .profile-name {
@@ -304,10 +151,8 @@
   font-size: 0.75rem;
   padding: 2px 8px;
   border-radius: 20px;
-  background: #f1f5f9;
-  color: #475569;
-  margin-top: 4px;
   display: inline-block;
+  margin-top: 4px;
 }
 
 .role-admin { background: #dcfce7; color: #166534; }
@@ -315,9 +160,7 @@
 .role-member { background: #fef3c7; color: #92400e; }
 
 .profile-menu-link,
-.logout-btn,
-.mobile-menu-link,
-.mobile-logout-btn {
+.logout-btn {
   display: block;
   width: 100%;
   text-align: left;
@@ -329,34 +172,50 @@
   transition: background 0.2s;
 }
 
-.profile-menu-link:hover,
-.mobile-menu-link:hover {
+.profile-menu-link:hover {
   background: #f8fafc;
   color: #1e40af;
 }
 
-.logout-btn,
-.mobile-logout-btn {
+.logout-btn {
   background: #fee2e2;
   color: #b91c1c;
   border: none;
   cursor: pointer;
 }
 
-.logout-btn:hover,
-.mobile-logout-btn:hover {
+.logout-btn:hover {
   background: #fecaca;
 }
 
-/* Mobile Menu */
+/* ===== Mobile Menu Button ===== */
+.mobile-menu-btn {
+  display: none;
+  flex-direction: column;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  z-index: 1102;
+}
+
+.mobile-menu-btn span {
+  width: 25px;
+  height: 3px;
+  background-color: #2d5a2d;
+  margin: 2px 0;
+  transition: 0.3s;
+}
+
+/* ===== Mobile Overlay ===== */
 .mobile-menu-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.4);
-  z-index: 100;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1050; /* Below header (1100), above content */
   display: flex;
   justify-content: flex-end;
 }
@@ -403,6 +262,9 @@
   color: #1e293b;
   font-weight: 500;
   border-bottom: 1px solid #f1f1f1;
+  background: none;
+  width: 100%;
+  text-align: left;
 }
 
 .mobile-profile-section {
@@ -423,33 +285,49 @@
   text-align: center;
 }
 
-/* Responsive Utilities */
-.desktop-only {
-  display: block;
-}
-
+/* ===== Responsive: Mobile ===== */
 @media (max-width: 768px) {
+  .header-container {
+    padding: 0 1rem;
+  }
+
   .desktop-only {
     display: none !important;
   }
 
-  .mobile-menu-btn {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    width: 30px;
-    height: 30px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    z-index: 60;
+  .auth-section {
+    display: none !important; /* Hidden on mobile — handled in overlay */
   }
 
-  .mobile-menu-btn span {
-    width: 100%;
-    height: 2px;
-    background: #1e293b;
-    border-radius: 2px;
+  .mobile-menu-btn {
+    display: flex;
   }
+
+  .logo h1 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-container {
+    padding: 0 0.5rem;
+  }
+
+  .logo h1 {
+    font-size: 1.3rem;
+  }
+
+  .mobile-menu-content {
+    width: 90%;
+  }
+}
+
+/* ===== Backdrop for Desktop Dropdown ===== */
+.dropdown-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1099; /* Just below header (1100) */
 }
