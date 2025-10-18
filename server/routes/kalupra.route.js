@@ -1,5 +1,5 @@
 import express from 'express';
-import {AddComplaint, AddInfoVillage, addMembersToFamily, AddSpecialEvent, createUser, DeleteComplaint, GetComplaints, GetInfoVillage, GetSpecialEvent, getAllUsers, loginUser, updateUserStatus, DeleteInfoVillage, DeleteSpecialEvent, getUserById } from '../controller/kalupra.controller.js';
+import {AddComplaint, AddInfoVillage, addMembersToFamily, AddSpecialEvent, createUser, DeleteComplaint, GetComplaints, GetInfoVillage, GetSpecialEvent, getAllUsers, loginUser, updateUserStatus, DeleteInfoVillage, DeleteSpecialEvent, getUserById, createMember, saveChatMessage, getAllChatMessages } from '../controller/kalupra.controller.js';
 
 const Router = express.Router();
 //contant form ka routes
@@ -19,6 +19,7 @@ Router.route('/deleteinfovillage/:id').delete(DeleteInfoVillage);
 
 //user routes
  Router.route('/createuser').post(createUser);
+ Router.route('/cerateMember').post(createMember);
  Router.route('/getallusers').get(getAllUsers);
  Router.route('/updatemember').patch(addMembersToFamily);
  Router.route('/updateisEnabled/:id').patch(updateUserStatus);
@@ -26,6 +27,10 @@ Router.route('/deleteinfovillage/:id').delete(DeleteInfoVillage);
 
  //login route
  Router.route('/login').post(loginUser);
+
+ //chat routes can be added 
+ Router.route('/addchat').post(saveChatMessage);
+ Router.route('/getchat').get(getAllChatMessages);
 
 
 

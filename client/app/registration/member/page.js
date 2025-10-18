@@ -18,7 +18,7 @@ function UserRegister() {
     dob: "",
     dobTime: "",
     age: "", // 👈 Added age field
-    gender: "",
+    gender: ""||"male",
     phoneNumber: "",
 
     // Education & Work
@@ -49,9 +49,11 @@ function UserRegister() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5000/api/v1/kalupra/createuser", formData);
+      console.log(formData)
+      console.log( "userData.email",userData.email, "formData.name",formData.name);
+      const res = await axios.post("http://localhost:5000/api/v1/kalupra/cerateMember", formData);
       if (userData?.email) {
-        await axios.patch("http://localhost:5000/api/v1/kalupra/addmembertofamily", { 
+        await axios.patch("http://localhost:5000/api/v1/kalupra/updatemember", { 
           email: userData.email, 
           newMembers: [formData.name] 
         });
@@ -59,7 +61,7 @@ function UserRegister() {
       alert("User Registered Successfully");
     } catch (error) {
       console.error(error);
-      alert("Failed to Register User");
+      alert("Failed to Register Users");
     }
   };
 
@@ -146,6 +148,7 @@ function UserRegister() {
               min="0"
               max="120"
               className="w-full px-4 py-2 border border-amber-600 rounded focus:outline-none focus:ring-2 focus:ring-amber-500"
+               required
             />
           </div>
 

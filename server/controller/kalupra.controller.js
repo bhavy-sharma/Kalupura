@@ -1,3 +1,4 @@
+import Chat from "../models/chat.model.js";
 import Complaint from "../models/contact.model.js";
 import InfoVillage from "../models/infoVillage.model.js";
 import SpecialEvent from "../models/specialEvent.model.js";
@@ -166,6 +167,85 @@ export const createUser = async (req, res) => {
   }
 }
 
+//memeber add
+export const createMember = async (req, res) => {
+  try {
+    const {
+      name,
+      fatherName,
+      motherName,
+      grandfatherName,
+      grandmotherName,
+      dob,
+      dobTime,
+      qualification,
+      gender,
+      phoneNumber,
+      age,
+      occupation,
+      maritalStatus,
+      marriageDate,
+      dharam,
+      jaati,
+      aadharNumber,
+      panCardNumber,
+      headOfFamilyName,
+      email,
+      password,
+      role,
+      memberOfFamily
+     
+    } = req.body;
+
+   const ageValue = req.body.age ? Number(req.body.age) : undefined;
+if (ageValue === undefined || isNaN(ageValue)) {
+  return res.status(400).json({ message: "आयु अनिवार्य और वैध संख्या होनी चाहिए" });
+}
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email and Password are required" });
+    }
+
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+      return res.status(404).json({ message: "User with this email already exists" });
+    }
+
+   
+    const newUser = await User.create({
+      name,
+      fatherName,
+      motherName,
+      grandfatherName,
+      grandmotherName,
+      dob,
+      dobTime,
+      qualification,
+      gender,
+      phoneNumber,
+      age:ageValue,
+      occupation,
+      maritalStatus,
+      marriageDate,
+      dharam,
+      jaati,
+      aadharNumber,
+      panCardNumber,
+      headOfFamilyName,
+      email,
+      password,
+      role,
+     memberOfFamily: undefined 
+     
+    });
+
+    return res.status(201).json({ msg: "User Created Successfully", newUser });
+
+  } catch (error) {
+    console.error("createuser error:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
 // Get All Users
 export const getAllUsers = async (req, res) => {
   try {
@@ -297,3 +377,29 @@ export const loginUser = async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+//chat model save
+export const saveChatMessage = async (req, res) => {
+  try {
+    const { msg, name, time, date } = req.body;
+    
+    if (!msg || !name || !time || !date) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+    const newChat = await Chat.create({ msg, name, time, date });
+    return res.status(201).json({ msg: "Message Saved Successfully", newChat });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+}
+
+//get all chat messages
+export const getAllChatMessages = async (req, res) => {
+  try {
+    const chats = await Chat.find();
+    return res.status(200).json(chats);
+  } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error" });
+    
+  }
+}
