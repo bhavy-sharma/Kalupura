@@ -33,5 +33,24 @@ Router.route('/deleteinfovillage/:id').delete(DeleteInfoVillage);
  Router.route('/getchat').get(getAllChatMessages);
 
 
+ // DELETE /api/v1/kalupra/deletechat
+// app.delete('/api/v1/kalupra/deletechat', async (req, res) => {
+//   try {
+//     const { id } = req.body;
+//     if (!id) return res.status(400).json({ error: 'Message ID required' });
+
+//     const deleted = await ChatMessage.findByIdAndDelete(id);
+//     if (!deleted) {
+//       return res.status(404).json({ error: 'Message not found' });
+//     }
+
+//     res.json({ success: true });
+//   } catch (error) {
+//     console.error('Delete error:', error);
+//     res.status(500).json({ error: 'Failed to delete message' });
+//   }
+// });
+
+
 
 export default Router;
