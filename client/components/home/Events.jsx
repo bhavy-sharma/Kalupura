@@ -107,7 +107,7 @@ const Events = () => {
                 </p>
 
                 <p className="event-desc">{event.description}</p>
-                <button className="event-btn">अधिक जानें</button>
+                {/* <button className="event-btn">अधिक जानें</button> */}
               </div>
             </div>
           </SwiperSlide>
