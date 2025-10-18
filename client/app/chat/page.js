@@ -1,32 +1,34 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-
-
 
 export default function Chat() {
   const [message, setMessage] = useState("");
   const [chat, setChat] = useState([]);
   const [userData, setUserData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  
 
-  // Mock user data since localStorage isn't available
-  // In a real app, you'd get this from your authentication system
+  // 🔽 Auto-scroll ref
+  const messagesEndRef = useRef(null);
+
+  // Scroll to bottom whenever chat updates
   useEffect(() => {
-    // Simulate getting user data from auth context or props
-    // For demo purposes, using mock data
-    const userDatas=localStorage.getItem("user");
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [chat]);
+
+  // Get user from localStorage
+  useEffect(() => {
+    const userDatas = localStorage.getItem("user");
     const mockUser = {
-      name: userDatas?JSON.parse(userDatas).name:"Guest User",
+      name: userDatas ? JSON.parse(userDatas).name : "Guest User",
       roomId: "kalupura-room"
     };
     setUserData(mockUser);
     setIsLoading(false);
   }, []);
 
-  // Fetch chat messages when userData is available
+  // Polling every 2 seconds
   useEffect(() => {
     if (!userData) return;
 
@@ -41,6 +43,8 @@ export default function Chat() {
     };
 
     fetchChatMessages();
+    const interval = setInterval(fetchChatMessages, 2000);
+    return () => clearInterval(interval);
   }, [userData]);
 
   // Handle invalid user
@@ -64,7 +68,7 @@ export default function Chat() {
     return (
       <div className="flex items-center justify-center h-screen bg-gray-100 text-red-600 font-medium">
         Invalid room or username.
-    </div>
+      </div>
     );
   }
 
@@ -82,7 +86,6 @@ export default function Chat() {
     };
 
     try {
-      // Save to database
       await fetch("http://localhost:5000/api/v1/kalupra/addchat", {
         method: "POST",
         headers: {
@@ -91,7 +94,6 @@ export default function Chat() {
         body: JSON.stringify(newMessage),
       });
 
-      // Add to local chat state
       setChat(prev => [...prev, newMessage]);
       setMessage("");
     } catch (error) {
@@ -101,7 +103,6 @@ export default function Chat() {
 
   return (
     <div className="flex flex-col h-screen bg-gray-100">
-      {/* Full-screen chat container */}
       <div className="flex flex-col h-full max-w-full mx-auto w-full">
         {/* Chat Header - WhatsApp Style */}
         <div className="bg-gray-800 text-white p-4 flex items-center justify-between shadow-md z-10">
@@ -156,6 +157,9 @@ export default function Chat() {
               </motion.div>
             ))}
           </AnimatePresence>
+
+          {/* 🔽 Invisible anchor for auto-scroll */}
+          <div ref={messagesEndRef} />
         </div>
 
         {/* Input Area - WhatsApp Style */}
