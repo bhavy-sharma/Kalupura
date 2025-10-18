@@ -1,94 +1,53 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { io } from "socket.io-client";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Chat() {
-  const [socket, setSocket] = useState(null);
   const [message, setMessage] = useState("");
   const [chat, setChat] = useState([]);
   const [userData, setUserData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
+  // Mock user data since localStorage isn't available
+  // In a real app, you'd get this from your authentication system
   useEffect(() => {
-    try {
-      const storedUser = localStorage.getItem("user");
-      if (storedUser) {
-        setUserData(JSON.parse(storedUser));
-      }
-    } catch (err) {
-      console.error("LocalStorage error:", err);
-    }
+    // Simulate getting user data from auth context or props
+    // For demo purposes, using mock data
+    const mockUser = {
+      name: "Bhavy Sharma",
+      roomId: "kalupura-room"
+    };
+    setUserData(mockUser);
+    setIsLoading(false);
   }, []);
 
-  useEffect(()=>{
+  // Fetch chat messages when userData is available
+  useEffect(() => {
+    if (!userData) return;
+
     const fetchChatMessages = async () => {
       try {
         const response = await fetch("http://localhost:5000/api/v1/kalupra/getchat");
         const data = await response.json();
-        setChat(data.chats);
-
+        setChat(data);
       } catch (error) {
-        console.log(error)
+        console.log("Error fetching chat messages:", error);
       }
-    }
-  })
-
-  useEffect(() => {
-    if (!userData?.roomId || !userData?.name) return;
-
-    const newSocket = io("http://localhost:5000", {
-      transports: ["websocket"],
-    });
-    setSocket(newSocket);
-
-    newSocket.emit("join_room", {
-      user: userData.name,
-      room: userData.roomId,
-    });
-
-    newSocket.on("recivedmsg", (data) => {
-      setChat((prev) => [...prev, data]);
-    });
-
-    return () => {
-      newSocket.disconnect();
     };
+
+    fetchChatMessages();
   }, [userData]);
 
-  const sendMessage = async() => {
-    if (!socket || !message.trim()) return;
-    await fetch("http://localhost:5000/api/v1/kalupra/addchat", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        msg: message.trim(),
-        name: userData.name,
-        time: new Date().toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-        }),
-        date: new Date().toLocaleDateString(),
-      }),
-    });     
-
-    const msgData = {
-      room: userData.roomId,
-      username: userData.name,
-      message: message.trim(),
-      time: new Date().toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
-    };
-
-    socket.emit("sendmsg", msgData);
-    setMessage("");
-  };
-
   // Handle invalid user
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-gray-100 text-gray-700 font-medium">
+        Loading...
+      </div>
+    );
+  }
+
   if (!userData) {
     return (
       <div className="flex items-center justify-center h-screen bg-gray-100 text-gray-700 font-medium">
@@ -101,9 +60,40 @@ export default function Chat() {
     return (
       <div className="flex items-center justify-center h-screen bg-gray-100 text-red-600 font-medium">
         Invalid room or username.
-      </div>
+    </div>
     );
   }
+
+  const sendMessage = async () => {
+    if (!message.trim()) return;
+    
+    const newMessage = {
+      msg: message.trim(),
+      name: userData.name,
+      time: new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+      date: new Date().toLocaleDateString(),
+    };
+
+    try {
+      // Save to database
+      await fetch("http://localhost:5000/api/v1/kalupra/addchat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newMessage),
+      });
+
+      // Add to local chat state
+      setChat(prev => [...prev, newMessage]);
+      setMessage("");
+    } catch (error) {
+      console.log("Error sending message:", error);
+    }
+  };
 
   return (
     <div className="flex flex-col h-screen bg-gray-100">
@@ -136,24 +126,24 @@ export default function Chat() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.15 }}
-                className={`flex ${msg.username === userData.name ? "justify-end" : "justify-start"}`}
+                className={`flex ${msg.name === userData.name ? "justify-end" : "justify-start"}`}
               >
                 <div
                   className={`max-w-xs md:max-w-md px-4 py-2 rounded-3xl shadow-sm ${
-                    msg.username === userData.name
+                    msg.name === userData.name
                       ? "bg-green-500 text-white rounded-tr-none"
                       : "bg-white text-gray-800 rounded-tl-none border border-gray-200"
                   }`}
                 >
-                  {msg.username !== userData.name && (
+                  {msg.name !== userData.name && (
                     <p className="text-xs font-semibold text-gray-600 mb-0.5">
-                      {msg.username}
+                      {msg.name}
                     </p>
                   )}
-                  <p>{msg.message}</p>
+                  <p>{msg.msg}</p>
                   <p
                     className={`text-[10px] mt-1 ${
-                      msg.username === userData.name ? "text-green-100 text-right" : "text-gray-500"
+                      msg.name === userData.name ? "text-green-100 text-right" : "text-gray-500"
                     }`}
                   >
                     {msg.time}
