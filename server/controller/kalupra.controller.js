@@ -381,12 +381,12 @@ export const loginUser = async (req, res) => {
 //chat model save
 export const saveChatMessage = async (req, res) => {
   try {
-    const { msg, name, time, date } = req.body;
+    const { message, username, time, date } = req.body;
     
-    if (!msg || !name || !time || !date) {
+    if (!message || !username || !time || !date) {
       return res.status(400).json({ message: "All fields are required" });
     }
-    const newChat = await Chat.create({ msg, name, time, date });
+    const newChat = await Chat.create({ message,username, time, date });
     return res.status(201).json({ msg: "Message Saved Successfully", newChat });
   } catch (error) {
     return res.status(500).json({ message: "Internal Server Error" });

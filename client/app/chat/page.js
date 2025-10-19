@@ -1,194 +1,168 @@
+// app/component/chat/page.js
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useState, useRef } from 'react';
+import { io } from "socket.io-client";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Chat() {
+  const [socket, setSocket] = useState(null);
   const [message, setMessage] = useState("");
   const [chat, setChat] = useState([]);
   const [userData, setUserData] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  // 🔽 Auto-scroll ref
   const messagesEndRef = useRef(null);
 
-  // Scroll to bottom whenever chat updates
+  
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chat]);
 
-  // Get user from localStorage
+ 
   useEffect(() => {
-    const userDatas = localStorage.getItem("user");
-    const mockUser = {
-      name: userDatas ? JSON.parse(userDatas).name : "Guest User",
-      roomId: "kalupura-room"
-    };
-    setUserData(mockUser);
-    setIsLoading(false);
+   
+    const stored = localStorage.getItem('user');
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        setUserData(parsed);
+      } catch (e) {
+        console.error("Failed to parse userData from localStorage", e);
+      }
+    }
   }, []);
 
-  // Polling every 2 seconds
+  // Fetch chat history once userData is available
   useEffect(() => {
     if (!userData) return;
 
-    const fetchChatMessages = async () => {
+    const fetchChats = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/v1/kalupra/getchat");
-        const data = await response.json();
-        setChat(data);
+        const res = await fetch('http://localhost:5000/api/v1/kalupra/getChat');
+        const data = await res.json();
+        setChat(data || []);
       } catch (error) {
-        console.log("Error fetching chat messages:", error);
+        console.error("Error fetching chats", error);
       }
     };
 
-    fetchChatMessages();
-    const interval = setInterval(fetchChatMessages, 2000);
-    return () => clearInterval(interval);
+    fetchChats();
   }, [userData]);
 
-  // Handle invalid user
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-screen bg-gray-100 text-gray-700 font-medium">
-        Loading...
-      </div>
-    );
-  }
+  
+  useEffect(() => {
+    if (!userData?.name || !userData?.roomId) return;
 
-  if (!userData) {
-    return (
-      <div className="flex items-center justify-center h-screen bg-gray-100 text-gray-700 font-medium">
-        Please login first to join the chat.
-      </div>
-    );
-  }
+    const newSocket = io("http://localhost:5000");
+    setSocket(newSocket);
 
-  if (!userData.roomId || !userData.name) {
-    return (
-      <div className="flex items-center justify-center h-screen bg-gray-100 text-red-600 font-medium">
-        Invalid room or username.
-      </div>
-    );
-  }
+    newSocket.emit("join_room", {
+      username: userData.name,
+      room: userData.roomId,
+    });
+
+    newSocket.on("recivedmsg", (data) => {
+      setChat((prev) => [...prev, data]);
+    });
+
+    return () => {
+      newSocket.disconnect();
+    };
+  }, [userData]);
 
   const sendMessage = async () => {
-    if (!message.trim()) return;
-    
-    const newMessage = {
-      msg: message.trim(),
-      name: userData.name,
-      time: new Date().toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
+    if (!socket || !message.trim() || !userData) return;
+
+    const msgData = {
+      room: userData.roomId, 
+      username: userData.name,
+      message: message.trim(),
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       date: new Date().toLocaleDateString(),
     };
 
     try {
-      await fetch("http://localhost:5000/api/v1/kalupra/addchat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newMessage),
+      // Save to DB
+      await fetch('http://localhost:5000/api/v1/kalupra/addChat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: msgData.username,
+          message: msgData.message,
+          date: new Date(),
+          time: msgData.time,
+        }),
       });
 
-      setChat(prev => [...prev, newMessage]);
+      
+      socket.emit("sendmsg", msgData);
       setMessage("");
     } catch (error) {
-      console.log("Error sending message:", error);
+      console.error("Failed to send message", error);
     }
   };
 
+  
+  if (!userData) {
+    return <div className="flex items-center justify-center h-screen">Loading...</div>;
+  }
+
+  if (!userData.name || !userData.roomId) {
+    return <div className="flex items-center justify-center h-screen">Invalid user data</div>;
+  }
+
   return (
-    <div className="flex flex-col h-screen bg-gray-100">
-      <div className="flex flex-col h-full max-w-full mx-auto w-full">
-        {/* Chat Header - WhatsApp Style */}
-        <div className="bg-gray-800 text-white p-4 flex items-center justify-between shadow-md z-10">
-          <div className="flex items-center space-x-3">
-            <div className="relative">
-              <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-white font-bold">
-                {userData.name.charAt(0).toUpperCase()}
-              </div>
-              <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-400 border-2 border-white rounded-full"></div>
-            </div>
-            <div>
-              <h2 className="font-semibold">Kalupura</h2>
-              <p className="text-xs text-gray-300">online</p>
-            </div>
-          </div>
-          <div className="text-sm text-gray-300">{userData.name}</div>
+    <div className="flex flex-col items-center justify-between min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+      <div className="w-full max-w-2xl bg-white shadow-lg rounded-2xl overflow-hidden flex flex-col h-[80vh]">
+        {/* Header */}
+        <div className="bg-indigo-600 text-white p-4 text-lg font-semibold flex justify-between">
+          <span>Room: {userData.roomId}</span>
+          <span>{userData.name}</span>
         </div>
 
-        {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto p-4 bg-gray-100 space-y-3">
+        {/* Messages */}
+        <div className="flex-1 overflow-y-auto p-4 space-y-2 bg-gray-50">
           <AnimatePresence>
             {chat.map((msg, i) => (
               <motion.div
-                key={i}
+                key={`${msg.username}-${msg.time}-${i}`}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.15 }}
-                className={`flex ${msg.name === userData.name ? "justify-end" : "justify-start"}`}
+                transition={{ duration: 0.2 }}
+                className={`flex ${msg.username === userData.name ? "justify-end" : "justify-start"}`}
               >
                 <div
-                  className={`max-w-xs md:max-w-md px-4 py-2 rounded-3xl shadow-sm ${
-                    msg.name === userData.name
-                      ? "bg-green-500 text-white rounded-tr-none"
-                      : "bg-white text-gray-800 rounded-tl-none border border-gray-200"
+                  className={`max-w-xs px-3 py-2 rounded-xl text-sm shadow-sm ${
+                    msg.username === userData.name
+                      ? "bg-indigo-500 text-white"
+                      : "bg-gray-200 text-gray-800"
                   }`}
                 >
-                  {msg.name !== userData.name && (
-                    <p className="text-xs font-semibold text-gray-600 mb-0.5">
-                      {msg.name}
-                    </p>
-                  )}
-                  <p>{msg.msg}</p>
-                  <p
-                    className={`text-[10px] mt-1 ${
-                      msg.name === userData.name ? "text-green-100 text-right" : "text-gray-500"
-                    }`}
-                  >
-                    {msg.time}
-                  </p>
+                  <p className="font-semibold text-xs opacity-80">{msg.username}</p>
+                  <p>{msg.message}</p>
+                  <p className="text-[10px] opacity-60 text-right">{msg.time}</p>
                 </div>
               </motion.div>
             ))}
+            <div ref={messagesEndRef} />
           </AnimatePresence>
-
-          {/* 🔽 Invisible anchor for auto-scroll */}
-          <div ref={messagesEndRef} />
         </div>
 
-        {/* Input Area - WhatsApp Style */}
-        <div className="p-3 bg-white border-t border-gray-200 flex items-center space-x-2">
+        {/* Input */}
+        <div className="p-3 flex gap-2 border-t bg-white">
           <input
             type="text"
-            placeholder="Type a message..."
+            placeholder="Type your message..."
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-            className="flex-1 border-none outline-none text-gray-800 placeholder-gray-500 px-4 py-2.5 rounded-full bg-gray-100 focus:bg-white focus:ring-2 focus:ring-green-300"
+            className="flex-grow border rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400 text-black"
           />
           <button
             onClick={sendMessage}
-            disabled={!message.trim()}
-            className={`p-3 rounded-full flex items-center justify-center ${
-              message.trim()
-                ? "bg-green-500 hover:bg-green-600 text-white"
-                : "bg-gray-300 text-gray-500 cursor-not-allowed"
-            } transition-all duration-200`}
+            className="bg-indigo-600 text-white px-5 py-2 rounded-xl hover:bg-indigo-700 transition-all duration-200"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="w-5 h-5"
-            >
-              <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
-            </svg>
+            Send
           </button>
         </div>
       </div>
