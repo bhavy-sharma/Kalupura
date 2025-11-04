@@ -115,7 +115,7 @@ export default function Chat() {
       <div className="w-full max-w-2xl bg-white shadow-lg rounded-2xl overflow-hidden flex flex-col h-[80vh]">
         {/* Header */}
         <div className="bg-indigo-600 text-white p-4 text-lg font-semibold flex justify-between">
-          <span>Room: {userData.roomId}</span>
+          <span>Room: Kalupura</span>
           <span>{userData.name}</span>
         </div>
 
