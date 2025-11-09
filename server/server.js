@@ -6,6 +6,7 @@ import http from 'http'; // ✅ http server ke liye
 import Router from './routes/kalupra.route.js';
 import { connectDB } from './database/db.index.js';
 import { setupSocket } from './socket/index.js'; // ✅ socket setup function
+import birthdayRoutes from './routes/birthdays.routes.js'
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/api/v1/kalupra', Router);
+app.use('/api/v1/kalupra', birthdayRoutes)
 
 
 
