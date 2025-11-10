@@ -24,7 +24,7 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/api/v1/kalupra', Router);
-app.use('/api/v1/kalupra', birthdayRoutes)
+ app.use('/api/v1/kalupra', birthdayRoutes)
 
 
 

@@ -1,5 +1,6 @@
 import express from 'express';
 import {AddComplaint, AddInfoVillage, addMembersToFamily, AddSpecialEvent, createUser, DeleteComplaint, GetComplaints, GetInfoVillage, GetSpecialEvent, getAllUsers, loginUser, updateUserStatus, DeleteInfoVillage, DeleteSpecialEvent, getUserById, createMember, saveChatMessage, getAllChatMessages } from '../controller/kalupra.controller.js';
+import router from './auth.js';
 
 const Router = express.Router();
 //contant form ka routes
@@ -31,6 +32,9 @@ Router.route('/deleteinfovillage/:id').delete(DeleteInfoVillage);
  //chat routes can be added 
  Router.route('/addchat').post(saveChatMessage);
  Router.route('/getchat').get(getAllChatMessages);
+
+ //birthday routes can be added here
+//  Router.route('/todays').get(findBirthday)
 
 
  // DELETE /api/v1/kalupra/deletechat

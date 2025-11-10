@@ -23,12 +23,19 @@ export default function BirthdaySection() {
 
     const fetchBirthdays = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/v1/kalupra/birthdays', {
+        const res=await fetch('http://localhost:5000/api/v1/kalupra/birthdays', {
+          method: 'GET',
           headers: {
-            Authorization: `Bearer ${token}` // ✅ Send JWT token
-          }
-        })
-        setData(res.data)
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+        const resData = await res.json();
+        if (!res.ok) {
+          throw new Error(resData.message || 'जन्मदिन डेटा लाने में त्रुटि।');
+        }
+        console.log("hello",resData)
+        setData(resData)
       } catch (err) {
         console.error('API Error:', err)
       } finally {

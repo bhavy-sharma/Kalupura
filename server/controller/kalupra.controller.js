@@ -372,6 +372,7 @@ export const loginUser = async (req, res) => {
     const { password: _, ...safeUser } = user._doc;
 
     return res.status(200).json({
+       success: true,
       msg: "Login Successful",
       user: safeUser,
       token,
