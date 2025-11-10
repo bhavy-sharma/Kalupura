@@ -12,8 +12,9 @@ export default function BirthdaySection() {
 
   useEffect(() => {
     // Allowed roles (as per your schema)
-    const allowedRoles = ['admin', 'headOFFamily', 'member']
-    const role = typeof window !== 'undefined' ? localStorage.getItem('role') : null
+    const allowedRoles = ['admin', 'headOFFamily', 'member'];
+    const role = typeof window !== 'undefined' ? localStorage.getItem('role') : null;
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null; 
 
     if (!role || !allowedRoles.includes(role)) {
       setLoading(false)
@@ -22,11 +23,14 @@ export default function BirthdaySection() {
 
     const fetchBirthdays = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/v1/kalupra/birthdays')
+        const res = await axios.get('http://localhost:5000/api/v1/kalupra/birthdays', {
+          headers: {
+            Authorization: `Bearer ${token}` // ✅ Send JWT token
+          }
+        })
         setData(res.data)
       } catch (err) {
         console.error('API Error:', err)
-        setError('जन्मदिन डेटा लोड नहीं हो सका।')
       } finally {
         setLoading(false)
       }
