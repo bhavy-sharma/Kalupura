@@ -14,7 +14,13 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // CORS enable karo (Express ke liye)
-app.use(cors());
+// app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000", // your Next.js frontend
+    credentials: true, 
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/api/v1/kalupra', Router);
