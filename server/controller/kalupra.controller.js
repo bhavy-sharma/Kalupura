@@ -346,7 +346,7 @@ export const loginUser = async (req, res) => {
       return res.status(400).json({ message: "Email and Password are required" });
     }
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email,password });
     if (!user) {
       return res.status(401).json({ message: "Invalid Email or Password" });
     }
@@ -363,10 +363,10 @@ export const loginUser = async (req, res) => {
     );
 
     res.cookie('role', user.role, {
-      httpOnly: false,     // ← MUST be false so axios can send it
+      httpOnly: false,     
       secure: false,
       sameSite: 'lax',
-      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+      maxAge: 7 * 24 * 60 * 60 * 1000 
     });
 
     const { password: _, ...safeUser } = user._doc;
