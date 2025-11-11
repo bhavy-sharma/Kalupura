@@ -1,18 +1,35 @@
 // components/home/BirthdaySection.jsx
 'use client'
 
+import { set } from 'mongoose'
 import { useEffect, useState } from 'react'
+import { io } from 'socket.io-client'
 
 export default function BirthdaySection() {
   const [data, setData] = useState(null)
   const [wished, setWished] = useState(new Set())
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [socket, setSocket] = useState(null);
+  const [userName, setUserName] = useState('अतिथि');
 
   useEffect(() => {
     const allowedRoles = ['admin', 'headOFFamily', 'member'];
     const role = typeof window !== 'undefined' ? localStorage.getItem('role') : null;
     const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null; 
+    setUserName(() => {
+      const stored = localStorage.getItem('user');
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored);
+          return parsed.name || 'अतिथि';
+        } catch (e) {
+          console.error("Failed to parse userData from localStorage", e);
+          return 'अतिथि';
+        }
+      }
+      return 'अतिथि';
+    }); 
 
     if (!role || !allowedRoles.includes(role)) {
       setLoading(false)
@@ -44,10 +61,43 @@ export default function BirthdaySection() {
 
     fetchBirthdays();
   }, []);
+  console.log("naam:",userName)
+  
+  useEffect(()=>{
+    const newSocket = io("http://localhost:5000");
+    setSocket(newSocket);
+    return () => newSocket.disconnect();
+  },[]);
 
-  const handleWish = (id) => {
+  const handleWish = async(id) => {
     setWished((prev) => new Set(prev).add(id));
     alert('शुभकामनाएँ भेज दी गईं! 🎉 गाँव वालों को खुशी होगी!');
+    const msgdata={
+      room:"main",
+      message:`${data.users[id].name} को जन्मदिन की शुभकामनाएँ! 🎂🌼`,
+      username:userName,
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      date: new Date().toLocaleDateString(),
+    }
+      try {
+      // Save to DB
+      await fetch('http://localhost:5000/api/v1/kalupra/addChat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: userName,
+          message: msgdata.message,
+          date: new Date(),
+          time: msgdata.time,
+        })
+      });
+       socket.emit("sendmsg", msgdata);
+    } catch (error) {
+      console.error("Error saving birthday wish to DB", error);
+    }
+   
+
+
   }
 
   const allowedRoles = ['admin', 'headOFFamily', 'member'];

@@ -15,15 +15,16 @@ function setupSocket(server) {
     socket.on("join_room", (data) => {
       socket.join(data.room);
       console.log(`${data.user} has joined the room: ${data.room}`);
-      socket.to(data.room).emit("recivedmsg", {
-        room: data.room,
-        username: "Member",
-        message: `${data.user} has joined the chat`,
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      });
+      // socket.to(data.room).emit("recivedmsg", {
+      //   room: data.room,
+      //   username: "Member",
+      //   message: `${data.user} has joined the chat`,
+      //   time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      // });
     });
 
     socket.on("sendmsg", (data) => {
+      console.log("msg:",data)
       io.to(data.room).emit("recivedmsg", data);
     });
 
