@@ -27,7 +27,7 @@ const Footer = () => {
   const contactInfo = [
     { icon: '📞', text: '+91 98765 43210' },
     { icon: '📧', text: 'info@kalupura.com' },
-    { icon: '🏠', text: 'कलुपुरा गाँव, जिला - उदाहरण, राजस्थान' }
+    { icon: '🏠', text: `कलूपुरा, जिला - गौतम बुद्ध नगर, राज्य - उत्तर प्रदेश, पिन कोड - 203203` }
   ];
 
   return (
@@ -39,14 +39,14 @@ const Footer = () => {
           
           {/* Brand Section */}
           <div className="footer-brand">
-            <h3 className="footer-logo">कलुपुरा</h3>
+            <h3 className="footer-logo">कलूपुरा</h3>
             <p className="footer-description">
               प्रकृति की गोद में बसा एक सुंदर और समृद्ध गाँव। 
               हमारा उद्देश्य ग्रामीण विकास और सामुदायिक समृद्धि को बढ़ावा देना है।
             </p>
             <div className="footer-made-with">
               <span>Made with ❤️ by </span>
-              <span className="developer-name">Bhavy Sharma and Anant Pratap Singh</span>
+              <span className="developer-name">Navokta Team</span>
             </div>
           </div>
 
@@ -104,7 +104,7 @@ const Footer = () => {
         <div className="footer-bottom">
           <div className="footer-bottom-content">
             <p className="copyright">
-              © {currentYear} कलुपुरा गाँव. सभी अधिकार सुरक्षित.
+              © {currentYear} कलूपुरा गाँव. सभी अधिकार सुरक्षित.
             </p>
           </div>
         </div>
