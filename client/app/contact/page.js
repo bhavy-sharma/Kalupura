@@ -80,7 +80,7 @@ const ContactPage = () => {
             <div className="space-y-4">
               <div>
                 <p className="font-medium text-gray-800">पता:</p>
-                <p className="text-gray-600">ग्राम पंचायत कार्यालय, कलुपुरा,<br />जिला – [अपना जिला], राज्य – [अपना राज्य],<br />पिन कोड – [XXXXXX]</p>
+                <p className="text-gray-600">ग्राम पंचायत कार्यालय, कलूपुरा,<br />जिला – बुलन्दशहर, राज्य – उत्तर प्रदेश,<br />पिन कोड – 203203</p>
               </div>
 
               <div>

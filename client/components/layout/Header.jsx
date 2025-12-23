@@ -72,7 +72,7 @@ const Header = () => {
         {/* Logo */}
         <div className="logo">
           <Link href="/" onClick={() => setIsMenuOpen(false)}>
-            <h1>कलुपुरा</h1>
+            <h1>कलूपुरा</h1>
           </Link>
         </div>
 
