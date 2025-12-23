@@ -61,6 +61,7 @@ export default function Chat() {
     });
 
     newSocket.on("recivedmsg", (data) => {
+      console.log("ya dta ha",data)
       setChat((prev) => [...prev, data]);
     });
 
