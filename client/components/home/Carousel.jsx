@@ -21,12 +21,12 @@ const Carousel = () => {
       title: '',
       description: ''
     },
-    // {
-    //   id: 3,
-    //   imageUrl: 'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-    //   title: 'ग्रामीण जीवन',
-    //   description: 'शांति और सादगी का अनुभव'
-    // }
+    {
+      id: 3,
+      imageUrl: '/img3.jpeg',
+      title: '',
+      description: ''
+    }
   ];
 
   // Load Devanagari font
