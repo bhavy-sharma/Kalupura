@@ -11,22 +11,22 @@ const Carousel = () => {
   const carouselImages = [
     {
       id: 1,
-      imageUrl: 'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-      title: 'स्वागत है कलुपुरा में',
-      description: 'प्रकृति की गोद में बसा एक सुंदर गाँव'
+      imageUrl: '/img1.jpeg',
+      title: '',
+      description: ''
     },
     {
       id: 2,
-      imageUrl: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-      title: 'हमारी संस्कृति',
-      description: 'पुरानी परंपराएँ, नई सोच'
+      imageUrl: '/img2.jpeg',
+      title: '',
+      description: ''
     },
-    {
-      id: 3,
-      imageUrl: 'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-      title: 'ग्रामीण जीवन',
-      description: 'शांति और सादगी का अनुभव'
-    }
+    // {
+    //   id: 3,
+    //   imageUrl: 'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+    //   title: 'ग्रामीण जीवन',
+    //   description: 'शांति और सादगी का अनुभव'
+    // }
   ];
 
   // Load Devanagari font
